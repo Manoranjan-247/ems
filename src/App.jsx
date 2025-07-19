@@ -14,6 +14,7 @@ import { Provider } from 'react-redux'
 import store from './app/store'
 import AddEmployee from './components/employee/AddEmployee'
 import Emp from './components/employee/Emp'
+import EmployeeDetails from './components/employee/EmployeeDetails'
 function App() {
 
 
@@ -29,6 +30,7 @@ function App() {
                   <Route path='dashboard' element={<Dashboard />} />
                   <Route path='employees' element={<EmployeeList />} />
                   <Route path='employees/new' element={<Emp />} />
+                  <Route path="/employee-details/:id" element={<EmployeeDetails />} />
                 </Route>
                 {/* Protected Route */}
               </Routes>

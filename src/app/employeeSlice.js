@@ -6,7 +6,7 @@ const employeeSlice = createSlice({
     initialState:{
         employees: [
             {
-                id: "EMP123",
+                empId: "EMP123",
                 fullName: "Ravi Kumar",
                 email: "ravi@example.com",
                 phoneNumber: "9876543210",
@@ -15,19 +15,20 @@ const employeeSlice = createSlice({
                 joiningDate: "2023-01-15",
                 employeeType: "Full-time",         // Full-time / Part-time / Intern
                 workLocation: "Bangalore",
-                profilePicture: "base64_or_url",
+                profilePicture: "https://i.pravatar.cc/400",
                 status: "Active",                 // Active / Inactive
                 isAdmin: true,
-                managerId: "EMP101",
+                managerNameOrId: "EMP101",
                 skills: ["React", "Node", "MongoDB"],
                 dateOfBirth: "1995-06-12",
                 emergencyContact: {
-                  name: "Suresh Kumar",
-                  phone: "9123456789"
+                  fullName: "Suresh Kumar",
+                  relationship:"Brother",
+                  phoneNumber: "9123456789"
                 }
               },
               {
-                id: "EMP124",
+                empId: "EMP124",
                 fullName: "Rakesh Kumar",
                 email: "ravi@example.com",
                 phoneNumber: "9876543210",
@@ -36,19 +37,20 @@ const employeeSlice = createSlice({
                 joiningDate: "2023-01-15",
                 employeeType: "Full-time",         // Full-time / Part-time / Intern
                 workLocation: "Bangalore",
-                profilePicture: "base64_or_url",
+                profilePicture: "https://i.pravatar.cc/300",
                 status: "Active",                 // Active / Inactive
-                isAdmin: true,
-                managerId: "EMP101",
+                isAdmin: false,
+                managerNameOrId: "EMP101",
                 skills: ["React", "Node", "MongoDB"],
                 dateOfBirth: "1995-06-12",
                 emergencyContact: {
-                  name: "Suresh Kumar",
-                  phone: "9123456789"
+                  fullName: "Suresh Kumar",
+                  relationship:"Brother",
+                  phoneNumber: "9123456789"
                 }
               },
               {
-                id: "EMP125",
+                empId: "EMP125",
                 fullName: "Sumeya bano",
                 email: "ravi@example.com",
                 phoneNumber: "9876543210",
@@ -57,21 +59,23 @@ const employeeSlice = createSlice({
                 joiningDate: "2023-01-15",
                 employeeType: "Full-time",         // Full-time / Part-time / Intern
                 workLocation: "Bangalore",
-                profilePicture: "base64_or_url",
+                profilePicture: "https://i.pravatar.cc/500",
                 status: "On Leave",                 // Active / Inactive / On Leave
                 isAdmin: true,
-                managerId: "EMP101",
+                managerNameOrId: "EMP101",
                 skills: ["React", "Node", "MongoDB"],
                 dateOfBirth: "1995-06-12",
                 emergencyContact: {
-                  name: "Suresh Kumar",
-                  phone: "9123456789"
+                  fullName: "Suresh Kumar",
+                  relationship:"Brother",
+                  phoneNumber: "9123456789"
                 }
               }
         ],
     },
     reducers:{
         addEmployee: (state, action) => {
+          console.log("Add employee is called");
             state.employees.push(action.payload);
         },
 
