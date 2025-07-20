@@ -184,15 +184,15 @@ const EmployeeList = () => {
             <TableHead>
               <TableRow>
                 <TableCell align='center'><strong>Sl no</strong></TableCell>
-                <TableCell align='center'>Fullname</TableCell>
-                <TableCell align='center'>Profile photo</TableCell>
-                <TableCell align='center'>Emp phone</TableCell>
-                <TableCell align='center'>Emp Id</TableCell>
-                <TableCell align='center'>Designation</TableCell>
-                <TableCell align='center'>Department</TableCell>
-                <TableCell align='center'>Status</TableCell>
-                <TableCell align='center'>isAdmin</TableCell>
-                <TableCell align='center'>Actions</TableCell>
+                <TableCell align='center'><strong>Fullname</strong></TableCell>
+                <TableCell align='center'><strong>Profile photo</strong></TableCell>
+                <TableCell align='center'><strong>Emp phone</strong></TableCell>
+                <TableCell align='center'><strong>Emp Id</strong></TableCell>
+                <TableCell align='center'><strong>Designation</strong></TableCell>
+                <TableCell align='center'><strong>Department</strong></TableCell>
+                <TableCell align='center'><strong>Status</strong></TableCell>
+                <TableCell align='center'><strong>isAdmin</strong></TableCell>
+                <TableCell align='center'><strong>Actions</strong></TableCell>
               </TableRow>
             </TableHead>
             <TableBody>

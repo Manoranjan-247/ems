@@ -1,5 +1,5 @@
 import React from 'react'
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { Avatar, Box, Button, Chip, Grid, Typography } from '@mui/material';
 import Person2OutlinedIcon from '@mui/icons-material/Person2Outlined';
@@ -9,15 +9,34 @@ import EmailOutlinedIcon from '@mui/icons-material/EmailOutlined';
 import LocalPhoneOutlinedIcon from '@mui/icons-material/LocalPhoneOutlined';
 import ContactPhoneOutlinedIcon from '@mui/icons-material/ContactPhoneOutlined';
 import { Skull } from 'lucide-react';
+import KeyboardBackspaceIcon from '@mui/icons-material/KeyboardBackspace';
+
 const EmployeeDetails = () => {
     const { id } = useParams();
     const employee = useSelector((store) => store.employee.employees.find((emp) => emp.empId === id));
+
     if (!employee) return <div style={{ padding: 3 }}>Employee not found</div>
     console.log(employee);
+    const navigate = useNavigate();
+  const handleclick = () => {
+    navigate("/employees")
+  }
     return (
-        <Box className="emp-details" sx={{ p: 5 }}>
+        <Box className="emp-details" sx={{ p: 3 }}>
+            <Button
+                        variant="text"
+                        sx={{
+                            color: 'inherit',
+                            '&:hover': { backgroundColor: 'transparent', color: 'blueviolet' }
+                        }}
+                        onClick={handleclick}
+                        startIcon={<KeyboardBackspaceIcon />}
+                    >
+                        Back to Employees
+                    </Button>
             <Grid container spacing={4}>
                 <Grid size={{ md: 12 }}>
+                    
                     <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
                         <Box>
                             <Avatar
@@ -71,7 +90,7 @@ const EmployeeDetails = () => {
                 <Grid item size={{ md: 8 }}>
                     <Box sx={{ display: "flex", flexDirection: "column", gap: 3, padding: 3, boxShadow: "rgba(149, 157, 165, 0.2) 0px 8px 24px " }}>
                         <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
-                            <EmailOutlinedIcon fontSize='large' color='primary'/>
+                            <EmailOutlinedIcon fontSize='large' color='primary' />
                             <Typography variant='h4' fontWeight={500} color='primary'>Employee Information</Typography>
                         </Box>
                         <Box sx={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)" }}>
@@ -160,11 +179,11 @@ const EmployeeDetails = () => {
                     </Box>
                 </Grid>
                 <Grid item size={{ md: 12 }} >
-                    <Box sx={{ display: "flex", flexDirection: "column", gap: 2, boxShadow: "rgba(149, 157, 165, 0.2) 0px 8px 24px ", padding:3 }}>
+                    <Box sx={{ display: "flex", flexDirection: "column", gap: 2, boxShadow: "rgba(149, 157, 165, 0.2) 0px 8px 24px ", padding: 3 }}>
                         <Typography variant='h4' fontWeight={500} color='primary'>Skills & Expertise</Typography>
                         <Box >
                             {
-                                employee.skills.map((skill) => (<Chip variant='contained' color='success' sx={{mr:2, }} label={skill} />))
+                                employee.skills.map((skill) => (<Chip variant='contained' color='success' sx={{ mr: 2, }} label={skill} />))
                             }
                         </Box>
                     </Box>
