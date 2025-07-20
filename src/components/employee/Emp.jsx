@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { styled } from '@mui/material/styles';
 import KeyboardBackspaceIcon from '@mui/icons-material/KeyboardBackspace';
 import Paper from '@mui/material/Paper';
@@ -7,8 +7,9 @@ import { useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
-import { useDispatch } from 'react-redux';
-import { addEmployee } from '../../app/employeeSlice'
+import { useDispatch, useSelector } from 'react-redux';
+import { addEmployee, updateEmployee } from '../../app/employeeSlice'
+import { useParams } from 'react-router-dom';
 
 const schema = yup.object().shape({
   fullName: yup.string()
@@ -17,8 +18,8 @@ const schema = yup.object().shape({
     .min(2, "Full Name must be at least 2 characters.")
     .max(50, "Full Name must be at most 50 characters."),
   email: yup.string()
-    .email("Invalid email format").
-    required("Email is required"),
+    .email("Invalid email format")
+    .required("Email is required"),
   phoneNumber: yup
     .string()
     .required("Phone number is required")
@@ -46,7 +47,10 @@ const schema = yup.object().shape({
   profilePicture: yup
     .string()
     .required("Profile picture is required")
-    .matches(/^data:image\/(png|jpg|jpeg);base64,/, "Only JPG, JPEG, or PNG base64 images are allowed"),
+    .matches(
+      /^data:image\/(png|jpe?g|webp);base64,/i, 
+      "Only PNG, JPG, JPEG, or WEBP base64 images are allowed"
+    ),
 
   empId: yup.
     string()
@@ -106,7 +110,7 @@ const Emp = () => {
     resolver: yupResolver(schema)
   });
 
-  const { register, handleSubmit, formState, setValue } = form;
+  const { register, handleSubmit, formState, setValue, reset } = form;
   const { errors } = formState
 
 
@@ -116,6 +120,25 @@ const Emp = () => {
   const [imagePreview, setImagePreview] = useState(null);
   const [isAdmin, setIsAdmin] = useState(false);
 
+  //code for edit 
+  const { id } = useParams();
+  const isEditMode = Boolean(id);
+  const employee = useSelector((store) => store.employee.employees.find((emp) => emp.empId === id));
+
+  useEffect(() => {
+    if (isEditMode) {
+      if (employee) {
+        const formValues = {
+          ...employee, 
+          skills: Array.isArray(employee.skills) ? employee.skills.join(', ') : employee.skills,
+        }
+        reset(formValues);
+        setImagePreview(employee.profilePicture);
+        setSelectedImage(employee.profilePicture);
+        setIsAdmin(employee.isAdmin)
+      }
+    }
+  }, [id, employee, isEditMode, reset])
 
 
   const handleclick = () => {
@@ -160,7 +183,15 @@ const Emp = () => {
   const handleFormSubmit = (data) => {
     console.log("Form data : ", data);
     // console.log("photo url : ", data.profilePicture);
-    dispatch(addEmployee(data));
+
+    const skillArray = data.skills.split(', ').map(skill => skill.trim()).filter(skill => skill !== "");
+    const formatedData = { ...data, skills: skillArray }
+    if (isEditMode) {
+      dispatch(updateEmployee({ empId:id, ...formatedData }))
+    } else {
+      dispatch(addEmployee(formatedData));
+    }
+
     navigate('/employees')
   }
 
@@ -351,7 +382,7 @@ const Emp = () => {
                   Cancel
                 </Button>
                 <Button variant="contained" color="primary" type='submit'>
-                  Add Employee
+                  {isEditMode ? "Update Employee" : "Add Employee"}
                 </Button>
               </Box>
             </Grid>

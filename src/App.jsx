@@ -30,6 +30,7 @@ function App() {
                   <Route path='dashboard' element={<Dashboard />} />
                   <Route path='employees' element={<EmployeeList />} />
                   <Route path='employees/new' element={<Emp />} />
+                  <Route path='employee-edit/:id' element={<Emp />} />
                   <Route path="/employee-details/:id" element={<EmployeeDetails />} />
                 </Route>
                 {/* Protected Route */}
