@@ -24,7 +24,7 @@ const Header3 = () => {
         <Box sx={{ display: "flex", alignItems: "center", justifyContent: "space-between", px: 4, py: 0.8, borderBottom: '1px solid #e0e0e0' }}>
 
             <Box sx={{ display: "flex", alignItems: "center", gap: 4 }} >
-                <MenuIcon sx={{ cursor: 'pointer', display: { xs: "none", sm: "none", md: "none", lg: "block" } }} onClick={toggleSidebar} />
+                <MenuIcon sx={{ cursor: 'pointer', display: { xs: "none", sm: "none", md: "none", lg: "none", xl:"block" } }} onClick={toggleSidebar} />
                 <Typography variant='h5' color='primary'>{isMobile ? "EMS" : "Employee Management System"}</Typography>
             </Box>
             <Box sx={{ display: "flex", alignItems: "center", gap: 4 }}>
@@ -65,7 +65,7 @@ function ProfileDropdown({ logout, useConfirmDialog }) {
             <Tooltip title="profile">
                 <IconButton onClick={handleClick} size="small" sx={{ ml: 2 }}>
                     <Avatar
-                        sx={{ width: 40, height: 40 , mr:{md:3}}}
+                        sx={{ width: 40, height: 40 , mr:{md:3,lg: 0 }}}
                         src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT1oyt9166XWnxUIF4AgPIJSA2AfNh1ebiRig&s"
                         alt="Profile"
                     />

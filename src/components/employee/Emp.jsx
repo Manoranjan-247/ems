@@ -10,6 +10,7 @@ import * as yup from 'yup';
 import { useDispatch, useSelector } from 'react-redux';
 import { addEmployee, updateEmployee } from '../../app/employeeSlice'
 import { useParams } from 'react-router-dom';
+import { useMediaQuery, useTheme } from '@mui/material';
 
 const schema = yup.object().shape({
   fullName: yup.string()
@@ -101,7 +102,9 @@ const schema = yup.object().shape({
 
 
 const Emp = () => {
-
+      const theme = useTheme();
+      const isMobile = useMediaQuery(theme.breakpoints.down('sm'));  //screen < 600px
+      const isSmallMobile = useMediaQuery('(min-width:390px) and (max-width:490px)');
 
   const form = useForm({
     defaultValues: {
@@ -230,8 +233,8 @@ const Emp = () => {
           Back to Employees
         </Button>
         <Box>
-          <Typography variant='h4' fontWeight={600}>Add New Employee</Typography>
-          <Typography variant='body1' mt={1} sx={{ opacity: 0.7 }}>
+          {!isSmallMobile && <Typography variant='h4' fontWeight={600}>Add New Employee</Typography>}
+          <Typography variant='body1' mt={1} sx={{ opacity: isSmallMobile ? 1 : 0.7 }}>
             Fill in the details to add a new employee
           </Typography>
         </Box>
@@ -397,14 +400,29 @@ const Emp = () => {
 
             {/* Submit Button */}
             <Grid size={{ xs: 12, md: 12 }} sx={{ mt: 3 }}>
-              <Box sx={{ display: 'flex', gap: 2, justifyContent: 'flex-end' }}>
-                {!isEditMode && <Button type='button' variant="outlined" onClick={() => { reset() }}>
+              <Box sx={{ display: 'flex', gap: 2, justifyContent: 'flex-end', flexWrap: "wrap" }}>
+                {!isEditMode && <Button type='button' variant="contained" onClick={() => { reset(); setImagePreview(null); setSelectedImage(null) }} sx={{
+                  px: { xs: 1, sm: 2 },
+                  py: { xs: 0.5, sm: 1 },
+                  fontSize: { xs: '0.7rem', sm: '0.875rem' },
+                  minWidth: 0,
+                }}>
                   Reset
                 </Button>}
-                <Button color='error' variant="outlined" onClick={handleclick}>
+                <Button color='error' variant="contained" onClick={handleclick} sx={{
+                  px: { xs: 1, sm: 2 },
+                  py: { xs: 0.5, sm: 1 },
+                  fontSize: { xs: '0.7rem', sm: '0.875rem' },
+                  minWidth: 0,
+                }}>
                   Cancel
                 </Button>
-                <Button variant="contained" color="success" type='submit'>
+                <Button variant="contained" color="success" type='submit' sx={{
+                  px: { xs: 1, sm: 2 },
+                  py: { xs: 0.5, sm: 1 },
+                  fontSize: { xs: '0.7rem', sm: '0.875rem' },
+                  minWidth: 0,
+                }}>
                   {isEditMode ? "Update Employee" : "Add Employee"}
                 </Button>
                 <Snackbar open={snackbarOpen} autoHideDuration={2000} onClose={handleClose} anchorOrigin={{ vertical: 'top', horizontal: 'right' }}>

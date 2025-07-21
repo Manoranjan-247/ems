@@ -186,7 +186,7 @@ const EmployeeList = () => {
           alignItems={{ xs: 'stretch', sm: 'center' }}
           spacing={2}
         >
-          <Typography variant='h6' fontWeight={600} sx={{ display: { sx: "none", sm: "block" } }} fontSize={{ xs: '1.5rem', sm: '2rem' }}>Employees Directory</Typography>
+          <Typography variant='h6' fontWeight={600} sx={{ display: { sx: "none", sm: "block" } }} fontSize={{ xs: '1.5rem', xl: '2rem' }}>Employees Directory</Typography>
 
           <TextField
             placeholder="Search employees"
@@ -211,16 +211,16 @@ const EmployeeList = () => {
           <Table>
             <TableHead>
               <TableRow>
-                <TableCell align='center'><strong>Sl no</strong></TableCell>
-                <TableCell align='center'><strong>Fullname</strong></TableCell>
-                <TableCell align='center' sx={{ display: { xs: "none",sm: "none" ,lg: "table-cell" } }}><strong>Profile photo</strong></TableCell>
-                {!isSmallMobile && <TableCell align='center' ><strong>Emp phone</strong></TableCell>}
-                <TableCell align='center' sx={{ display: { xs: "none", sm: "none",md:"table-cell" }, fontSize:{xs:'1rem', lg:'1.5rem'} }}><strong>Emp Id</strong></TableCell>
-                <TableCell align='center' sx={{ display: { xs: "none", sm: "none", md: "table-cell", fontSize:{xs:'1rem', lg:'1.5rem'} } }}><strong>Designation</strong></TableCell>
-                <TableCell align='center' sx={{ display: { xs: "none", sm: "none", lg: "table-cell" }, fontSize:{xs:'1rem', lg:'1.5rem'} }}><strong>Department</strong></TableCell>
-                <TableCell align='center' sx={{ display: { xs: "none", sm: "table-cell" }, fontSize:{xs:'1rem', lg:'1.5rem'} }}><strong>Status</strong></TableCell>
-                <TableCell align='center' sx={{ display: { xs: "none", sm: "none", md: "table-cell" }, fontSize:{xs:'1rem', lg:'1.5rem'} }}><strong>isAdmin</strong></TableCell>
-                <TableCell align='center'><strong>Actions</strong></TableCell>
+                <TableCell align='center' sx={{fontSize:{xs:'1rem', xl:'1.25rem'}}}><strong>Sl no</strong></TableCell>
+                <TableCell align='center' sx={{fontSize:{xs:'1rem', xl:'1.25rem'}}}><strong>Fullname</strong></TableCell>
+                <TableCell align='center' sx={{ display: { xs: "none",sm: "none" ,lg: "table-cell" }, fontSize:{xs:'1rem', xl:'1.25rem'} }}><strong>Profile photo</strong></TableCell>
+                {!isSmallMobile && <TableCell align='center' sx={{fontSize:{xs:'1rem', xl:'1.25rem'}}} ><strong>Emp phone</strong></TableCell>}
+                <TableCell align='center' sx={{ display: { xs: "none", sm: "none",md:"table-cell" }, fontSize:{xs:'1rem', xl:'1.25rem'} }}><strong>Emp Id</strong></TableCell>
+                <TableCell align='center' sx={{ display: { xs: "none", sm: "none", md: "table-cell"}, fontSize:{xs:'1rem', xl:'1.25rem'}  }}><strong>Designation</strong></TableCell>
+                <TableCell align='center' sx={{ display: { xs: "none", sm: "none", lg: "table-cell" }, fontSize:{xs:'1rem', xl:'1.5rem'} }}><strong>Department</strong></TableCell>
+                <TableCell align='center' sx={{ display: { xs: "none", sm: "table-cell" }, fontSize:{xs:'1rem', xl:'1.25rem'} }}><strong>Status</strong></TableCell>
+                <TableCell align='center' sx={{ display: { xs: "none", sm: "none", md: "table-cell" }, fontSize:{xs:'1rem', xl:'1.25rem'} }}><strong>isAdmin</strong></TableCell>
+                <TableCell align='center' sx={{fontSize:{xs:'1rem', xl:'1.25rem'}}}><strong>Actions</strong></TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -246,10 +246,10 @@ const EmployeeList = () => {
                     <TableCell align='center' sx={{ display: { xs: "none", sm: "none", md: "table-cell", fontSize:{xs:'1rem', md:'1.5rem'} } }}>{emp.designation}</TableCell>
                     <TableCell align='center' sx={{ display: { xs: "none", sm: "none", lg: "table-cell", fontSize:{xs:'1rem', md:'1.5rem'} } }}>{emp.department}</TableCell>
                     <TableCell align='center' sx={{ display: { xs: "none", sm: "table-cell", fontSize:{xs:'1rem', md:'1.5rem'} } }}>
-                      <Chip label={emp.status} color={emp.status === "Active" ? "success" : emp.status === "On Leave" ? "error" : "default"} variant="outlined"
+                      <Chip label={emp.status}  color={emp.status === "Active" ? "success" : emp.status === "On Leave" ? "error" : "default"} variant="outlined"
                       />
                     </TableCell>
-                    <TableCell align='center' sx={{ display: { xs: "none", sm: "none", md: "table-cell", fontSize:{xs:'1rem', md:'1.5rem'} } }}>
+                    <TableCell align='center' sx={{ display: { xs: "none", sm: "none", md: "table-cell", fontSize:{xs:"small", lg:"medium"},  } }}>
                       {emp.isAdmin === true ? <GppGoodOutlinedIcon color='success' fontSize='large' /> : <GppBadOutlinedIcon color='error' fontSize='large' />}
                     </TableCell>
                     <TableCell align='center'>
@@ -260,13 +260,13 @@ const EmployeeList = () => {
                         gap: 1
                       }}>
                         <Tooltip title="edit details" >
-                          <EditIcon color='primary' sx={{ cursor: "pointer", fontSize:{xs:"small", sm:"medium", md:"large"} }}  onClick={() => handleEdit(emp.empId)} />
+                          <EditIcon color='primary' sx={{ cursor: "pointer",  }}  onClick={() => handleEdit(emp.empId)} />
                         </Tooltip>
                         <Tooltip title="generate ID card">
-                          <CreditCardOutlinedIcon color='primary' sx={{ cursor: "pointer" }}  onClick={() => generatePDF(emp)} />
+                          <CreditCardOutlinedIcon color='primary' sx={{ cursor: "pointer",  }}  onClick={() => generatePDF(emp)} />
                         </Tooltip>
                         <Tooltip title="view details">
-                          <ArrowRightAltIcon color='primary' sx={{ cursor: "pointer" }}  onClick={() => navigate(`/employee-details/${emp.empId}`)} />
+                          <ArrowRightAltIcon color='primary' sx={{ cursor: "pointer" }}   onClick={() => navigate(`/employee-details/${emp.empId}`)} />
                         </Tooltip>
                       </Box>
                     </TableCell>
