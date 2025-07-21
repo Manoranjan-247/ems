@@ -19,7 +19,7 @@ const employeeSlice = createSlice({
             status: "Active",                 // Active / Inactive
             isAdmin: true,
             managerNameOrId: "EMP101",
-            skills: ["React", "Node", "MongoDB"],
+            skills: ["React", "Node", "MongoDB", "Java", "Typescript", "SQL", ],
             dateOfBirth: "1995-06-12",
             emergencyContact: {
               fullName: "Suresh Kumar",

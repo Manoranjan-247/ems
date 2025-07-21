@@ -15,6 +15,7 @@ import store from './app/store'
 import AddEmployee from './components/employee/AddEmployee'
 import Emp from './components/employee/Emp'
 import EmployeeDetails from './components/employee/EmployeeDetails'
+import EmployeeDetails2 from './components/employee/EmployeeDetails2'
 function App() {
 
 
@@ -27,11 +28,11 @@ function App() {
               <Routes>
                 <Route path='/login' element={<LoginPage />} />
                 <Route path='/' element={<ProtectedRoute><Layout3 /></ProtectedRoute>} >
-                  <Route path='dashboard' element={<Dashboard />} />
+                  {/* <Route path='dashboard' element={<Dashboard />} /> */}
                   <Route path='employees' element={<EmployeeList />} />
                   <Route path='employees/new' element={<Emp />} />
                   <Route path='employee-edit/:id' element={<Emp />} />
-                  <Route path="/employee-details/:id" element={<EmployeeDetails />} />
+                  <Route path="/employee-details/:id" element={<EmployeeDetails2 />} />
                 </Route>
                 {/* Protected Route */}
               </Routes>

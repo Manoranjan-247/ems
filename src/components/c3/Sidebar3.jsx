@@ -1,21 +1,32 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
 import { Drawer, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Divider, Toolbar, Typography, Box } from '@mui/material';
 import { Users, UserPlus, Home, Settings } from 'lucide-react';
 import { useLayoutContext } from '../context/LayoutContext';
+import { useMediaQuery, useTheme } from '@mui/material';
 
 const drawerWidthOpen = 240;
 const drawerWidthClosed = 64;
 
 const navigation = [
-  { name: 'Dashboard', href: '/dashboard', icon: <Home /> },
+  // { name: 'Dashboard', href: '/dashboard', icon: <Home /> },
   { name: 'Employees', href: '/employees', icon: <Users /> },
   { name: 'Add Employee', href: '/employees/new', icon: <UserPlus /> },
-  { name: 'Settings', href: '/settings', icon: <Settings /> },
+  // { name: 'Settings', href: '/settings', icon: <Settings /> },
 ];
 
 const Sidebar3 = () => {
-  const { sidebarOpen } = useLayoutContext();
+  const { sidebarOpen, setSidebarOpen } = useLayoutContext();
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
+
+  useEffect(() => {
+    if (isMobile && sidebarOpen) {
+      setSidebarOpen(false);
+    }
+  }, [isMobile]); // runs when screen size changes
+
+
   const location = useLocation();
 
   return (

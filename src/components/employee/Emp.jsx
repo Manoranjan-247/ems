@@ -48,7 +48,7 @@ const schema = yup.object().shape({
     .string()
     .required("Profile picture is required")
     .matches(
-      /^data:image\/(png|jpe?g|webp);base64,/i, 
+      /^data:image\/(png|jpe?g|webp);base64,/i,
       "Only PNG, JPG, JPEG, or WEBP base64 images are allowed"
     ),
 
@@ -129,7 +129,7 @@ const Emp = () => {
     if (isEditMode) {
       if (employee) {
         const formValues = {
-          ...employee, 
+          ...employee,
           skills: Array.isArray(employee.skills) ? employee.skills.join(', ') : employee.skills,
         }
         reset(formValues);
@@ -187,7 +187,7 @@ const Emp = () => {
     const skillArray = data.skills.split(', ').map(skill => skill.trim()).filter(skill => skill !== "");
     const formatedData = { ...data, skills: skillArray }
     if (isEditMode) {
-      dispatch(updateEmployee({ empId:id, ...formatedData }))
+      dispatch(updateEmployee({ empId: id, ...formatedData }))
     } else {
       dispatch(addEmployee(formatedData));
     }
@@ -196,13 +196,20 @@ const Emp = () => {
   }
 
   return (
-    <Box p={3}>
-      <Box sx={{ display: "flex", gap: 4, mb: 4 }}>
+    <Box p={2}>
+      <Box sx={{ display: "flex", flexDirection: { xs: "column", md: "column" }, gap: { xs: 1, md: 4 }, mb: { xs: 1, md: 3 }, pl: 2 }}>
         <Button
+          // fullWidth
           variant="text"
+          disableRipple
+          disableFocusRipple
+          disableElevation
           sx={{
             color: 'inherit',
-            '&:hover': { backgroundColor: 'transparent', color: 'blueviolet' }
+            '&:hover': { backgroundColor: 'transparent', color: 'blueviolet' },
+            alignSelf: "flex-start",
+            justifyContent: "flex-start",
+            textAlign: "left",
           }}
           onClick={handleclick}
           startIcon={<KeyboardBackspaceIcon />}
@@ -225,19 +232,19 @@ const Emp = () => {
 
               {/* Inner Grid Container */}
               <Grid container spacing={2}>
-                <Grid size={{ md: 12 }}>
+                <Grid size={{ xs: 12, sm: 6, md: 12 }}>
                   <TextField label="Full Name" type='text' fullWidth variant="outlined" {...register("fullName")} error={!!errors.fullName} helperText={errors.fullName?.message} />
                 </Grid>
-                <Grid size={{ md: 12 }}>
+                <Grid size={{ xs: 12, sm: 6, md: 12 }}>
                   <TextField label="Email" type='email' fullWidth variant="outlined" {...register("email")} error={!!errors.email} helperText={errors.email?.message} />
                 </Grid>
-                <Grid size={{ md: 6 }}>
+                <Grid size={{ xs: 12, sm: 6, md: 6 }}>
                   <TextField label="Phone Number" type='text' fullWidth variant="outlined" {...register("phoneNumber")} error={!!errors.phoneNumber} helperText={errors.phoneNumber?.message} />
                 </Grid>
-                <Grid size={{ md: 6 }}>
+                <Grid size={{ xs: 12, sm: 6, md: 6 }}>
                   <TextField label="Date of Birth" type='date' fullWidth variant="outlined" InputLabelProps={{ shrink: true }} {...register("dateOfBirth")} error={!!errors.dateOfBirth} helperText={errors.dateOfBirth?.message} />
                 </Grid>
-                <Grid size={{ md: 12 }}>
+                <Grid size={{ xs: 12, md: 12 }}>
                   <TextField label="Skills (comma-separated)" placeholder="Javascript, Node.js, React etc" type='text' fullWidth variant='outlined' required {...register("skills")} error={!!errors.skills} helperText={errors.skills?.message} />
                 </Grid>
 
@@ -298,22 +305,22 @@ const Emp = () => {
               </Grid>
             </Grid>
 
-            <Grid size={{ md: 8 }} sx={{ p: 2, boxShadow: "rgba(0, 0, 0, 0.16) 0px 1px 4px" }} spacing={2}>
+            <Grid size={{ xs: 12, md: 8 }} sx={{ p: 2, boxShadow: "rgba(0, 0, 0, 0.16) 0px 1px 4px" }} spacing={2}>
               <Typography variant='h5' fontWeight={600} mb={2} >  Job Information  </Typography>
               <Grid container spacing={2}>
-                <Grid size={{ md: 6 }}>
+                <Grid size={{ xs: 12, sm: 6, md: 6 }}>
                   <TextField label="Employee ID" type='text' fullWidth required variant="outlined" {...register("empId")} error={!!errors.empId} helperText={errors.empId?.message} />
                 </Grid>
-                <Grid size={{ md: 6 }}>
+                <Grid size={{ xs: 12, sm: 6, md: 6 }}>
                   <TextField label="Designation" type='text' fullWidth required variant="outlined"  {...register("designation")} error={!!errors.designation} helperText={errors.designation?.message} />
                 </Grid>
-                <Grid size={{ md: 6 }}>
+                <Grid size={{ xs: 12, sm: 6, md: 6 }}>
                   <TextField label="Department" type='text' fullWidth required variant="outlined" {...register("department")} error={!!errors.department} helperText={errors.department?.message} />
                 </Grid>
-                <Grid size={{ md: 6 }}>
+                <Grid size={{ xs: 12, sm: 6, md: 6 }}>
                   <TextField label="Joining date" type='date' fullWidth required variant="outlined" InputLabelProps={{ shrink: true }} {...register("joiningDate")} error={!!errors.joiningDate} helperText={errors.joiningDate?.message} />
                 </Grid>
-                <Grid item size={{ md: 6 }} >
+                <Grid item size={{ xs: 12, sm: 6, md: 6 }} >
                   <TextField label="Employee Type" select fullWidth variant="outlined" required defaultValue="" {...register("employeeType")} error={!!errors.employeeType} helperText={errors.employeeType?.message}>
                     <MenuItem value="">Select Employee Type</MenuItem>
                     <MenuItem value="Full Time">Full Time</MenuItem>
@@ -321,10 +328,10 @@ const Emp = () => {
                     <MenuItem value="Intern">Intern</MenuItem>
                   </TextField>
                 </Grid>
-                <Grid size={{ md: 6 }}>
+                <Grid size={{ xs: 12, sm: 6, md: 6 }}>
                   <TextField label="Work Location" type='text' fullWidth required variant="outlined" {...register("workLocation")} error={!!errors.workLocation} helperText={errors.workLocation?.message} />
                 </Grid>
-                <Grid item size={{ md: 6 }} >
+                <Grid item size={{ xs: 12, sm: 6, md: 6 }} >
                   <TextField label="Status" select fullWidth variant="outlined" required defaultValue="" {...register("status")} error={!!errors.status} helperText={errors.status?.message}>
                     <MenuItem value="">Select Status</MenuItem>
                     <MenuItem value="Active">Active</MenuItem>
@@ -332,10 +339,10 @@ const Emp = () => {
                     <MenuItem value="On Leave">On Leave</MenuItem>
                   </TextField>
                 </Grid>
-                <Grid size={{ md: 6 }}>
+                <Grid size={{ xs: 12, sm: 6, md: 6 }}>
                   <TextField label="Manager name or ID" type='text' fullWidth variant="outlined" {...register("managerNameOrId")} error={!!errors.managerNameOrId} helperText={errors.managerNameOrId?.message} />
                 </Grid>
-                <Grid item md={6}>
+                <Grid item size={{ xs: 12, md: 6 }}>
                   <FormControlLabel
                     control={
                       <Checkbox
@@ -362,13 +369,13 @@ const Emp = () => {
             <Grid size={{ md: 12 }} sx={{ p: 2, boxShadow: "rgba(0, 0, 0, 0.16) 0px 1px 4px" }}>
               <Typography variant='h5' fontWeight={600} mb={2}>  Emergency Contact  </Typography>
               <Grid container spacing={2} sx={{ mt: 1 }}>
-                <Grid size={{ md: 4 }}>
+                <Grid size={{ xs: 12, sm: 6, md: 4 }}>
                   <TextField label=" Contact Name" type='text' fullWidth variant="outlined"  {...register("emergencyContact.fullName")} error={!!errors.emergencyContact?.fullName} helperText={errors.emergencyContact?.fullName?.message} />
                 </Grid>
-                <Grid size={{ md: 4 }}>
+                <Grid size={{ xs: 12, sm: 6, md: 4 }}>
                   <TextField label="Relationship" placeholder='e.g., Spouse, Parent' type='text' fullWidth variant="outlined" {...register("emergencyContact.relationship")} error={!!errors.emergencyContact?.relationship} helperText={errors.emergencyContact?.relationship?.message} />
                 </Grid>
-                <Grid size={{ md: 4 }}>
+                <Grid size={{ xs: 12, sm: 6, md: 4 }}>
                   <TextField label="Phone Number" type='text' fullWidth variant="outlined" {...register("emergencyContact.phoneNumber")} error={!!errors.emergencyContact?.phoneNumber} helperText={errors.emergencyContact?.phoneNumber?.message} />
                 </Grid>
 
@@ -376,7 +383,7 @@ const Emp = () => {
             </Grid>
 
             {/* Submit Button */}
-            <Grid size={{ md: 12 }} sx={{ mt: 3 }}>
+            <Grid size={{ xs: 12, md: 12 }} sx={{ mt: 3 }}>
               <Box sx={{ display: 'flex', gap: 2, justifyContent: 'flex-end' }}>
                 <Button variant="outlined" onClick={handleclick}>
                   Cancel

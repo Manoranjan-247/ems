@@ -8,7 +8,7 @@ export const LayoutProvider = ({ children }) => {
   const toggleSidebar = () => setSidebarOpen((prev) => !prev);
 
   return (
-    <LayoutContext.Provider value={{ sidebarOpen, toggleSidebar }}>
+    <LayoutContext.Provider value={{ sidebarOpen,setSidebarOpen, toggleSidebar }}>
       {children}
     </LayoutContext.Provider>
   );

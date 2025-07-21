@@ -8,35 +8,35 @@ import CalendarMonthOutlinedIcon from '@mui/icons-material/CalendarMonthOutlined
 import EmailOutlinedIcon from '@mui/icons-material/EmailOutlined';
 import LocalPhoneOutlinedIcon from '@mui/icons-material/LocalPhoneOutlined';
 import ContactPhoneOutlinedIcon from '@mui/icons-material/ContactPhoneOutlined';
-import { Skull } from 'lucide-react';
 import KeyboardBackspaceIcon from '@mui/icons-material/KeyboardBackspace';
 
 const EmployeeDetails = () => {
     const { id } = useParams();
     const employee = useSelector((store) => store.employee.employees.find((emp) => emp.empId === id));
 
-    if (!employee) return <div style={{ padding: 3 }}>Employee not found</div>
-    console.log(employee);
+    if (!employee) return <Box sx={{minHeight:"100%", display: "flex", justifyContent: "center", alignItems: "center", fontSize: "40px", color:"red" }}>Employee with these id not found</Box>
+
+    // console.log(employee);
     const navigate = useNavigate();
-  const handleclick = () => {
-    navigate("/employees")
-  }
+    const handleclick = () => {
+        navigate("/employees")
+    }
     return (
         <Box className="emp-details" sx={{ p: 3 }}>
             <Button
-                        variant="text"
-                        sx={{
-                            color: 'inherit',
-                            '&:hover': { backgroundColor: 'transparent', color: 'blueviolet' }
-                        }}
-                        onClick={handleclick}
-                        startIcon={<KeyboardBackspaceIcon />}
-                    >
-                        Back to Employees
-                    </Button>
+                variant="text"
+                sx={{
+                    color: 'inherit',
+                    '&:hover': { backgroundColor: 'transparent', color: 'blueviolet' }
+                }}
+                onClick={handleclick}
+                startIcon={<KeyboardBackspaceIcon />}
+            >
+                Back to Employees
+            </Button>
             <Grid container spacing={4}>
                 <Grid size={{ md: 12 }}>
-                    
+
                     <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
                         <Box>
                             <Avatar
@@ -89,63 +89,63 @@ const EmployeeDetails = () => {
 
                 <Grid item size={{ md: 8 }}>
                     <Box sx={{ display: "flex", flexDirection: "column", gap: 3, padding: 3, boxShadow: "rgba(149, 157, 165, 0.2) 0px 8px 24px " }}>
-                        <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
+                        <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
                             <EmailOutlinedIcon fontSize='large' color='primary' />
                             <Typography variant='h4' fontWeight={500} color='primary'>Employee Information</Typography>
                         </Box>
                         <Box sx={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)" }}>
                             <Box sx={{ pb: 3 }}>
                                 <Typography variant='body1' sx={{ opacity: 0.6 }}>Email</Typography>
-                                <Box sx={{ opacity: 0.8, display: "flex", alignItems: "center", gap: 2 }}>
+                                <Box sx={{ opacity: 0.8, display: "flex", alignItems: "center", gap: 1 }}>
                                     <EmailOutlinedIcon fontSize='small' />
                                     <Typography variant='h6'  >{employee.email}</Typography>
                                 </Box>
                             </Box>
                             <Box sx={{ pb: 3 }}>
                                 <Typography variant='body1' sx={{ opacity: 0.6 }}>Phonenumber</Typography>
-                                <Box sx={{ opacity: 0.7, display: "flex", alignItems: "center", gap: 2 }}>
+                                <Box sx={{ opacity: 0.7, display: "flex", alignItems: "center", gap: 1 }}>
                                     <LocalPhoneOutlinedIcon fontSize='small' />
                                     <Typography variant='h6'  >{employee.phoneNumber}</Typography>
                                 </Box>
                             </Box>
                             <Box sx={{ pb: 3 }}>
                                 <Typography variant='body1' sx={{ opacity: 0.6 }}>Date of Birth</Typography>
-                                <Box sx={{ opacity: 0.7, display: "flex", alignItems: "center", gap: 2 }}>
+                                <Box sx={{ opacity: 0.7, display: "flex", alignItems: "center", gap: 1 }}>
                                     <CalendarMonthOutlinedIcon fontSize='small' />
                                     <Typography variant='h6'  >{employee.dateOfBirth}</Typography>
                                 </Box>
                             </Box>
                             <Box sx={{ pb: 3 }}>
                                 <Typography variant='body1' sx={{ opacity: 0.6 }}>Work Location</Typography>
-                                <Box sx={{ opacity: 0.7, display: "flex", alignItems: "center", gap: 2 }}>
+                                <Box sx={{ opacity: 0.7, display: "flex", alignItems: "center", gap: 1 }}>
                                     <LocationOnOutlinedIcon fontSize='small' />
                                     <Typography variant='h6'  >{employee.workLocation}</Typography>
                                 </Box>
                             </Box>
                             <Box sx={{ pb: 3 }}>
                                 <Typography variant='body1' sx={{ opacity: 0.6 }}>Employee Type</Typography>
-                                <Box sx={{ opacity: 0.7, display: "flex", alignItems: "center", gap: 2 }}>
-                                    <LocationOnOutlinedIcon fontSize='small' />
+                                <Box sx={{ opacity: 0.7, display: "flex", alignItems: "center", gap: 1 }}>
+                                    <Person2OutlinedIcon fontSize='small' />
                                     <Typography variant='h6'  >{employee.employeeType}</Typography>
                                 </Box>
                             </Box>
                             <Box sx={{ pb: 3 }}>
                                 <Typography variant='body1' sx={{ opacity: 0.6 }}>Manager name or ID</Typography>
-                                <Box sx={{ opacity: 0.7, display: "flex", alignItems: "center", gap: 2 }}>
+                                <Box sx={{ opacity: 0.7, display: "flex", alignItems: "center", gap: 1 }}>
                                     <LocationOnOutlinedIcon fontSize='small' />
                                     <Typography variant='h6'  >{employee.managerNameOrId}</Typography>
                                 </Box>
                             </Box>
                             <Box >
                                 <Typography variant='body1' sx={{ opacity: 0.6 }}>Department</Typography>
-                                <Box sx={{ opacity: 0.7, display: "flex", alignItems: "center", gap: 2 }}>
+                                <Box sx={{ opacity: 0.7, display: "flex", alignItems: "center", gap: 1 }}>
                                     <LocationOnOutlinedIcon fontSize='small' />
                                     <Typography variant='h6'  >{employee.department}</Typography>
                                 </Box>
                             </Box>
                             <Box >
                                 <Typography variant='body1' sx={{ opacity: 0.6 }}>Designation</Typography>
-                                <Box sx={{ opacity: 0.7, display: "flex", alignItems: "center", gap: 2 }}>
+                                <Box sx={{ opacity: 0.7, display: "flex", alignItems: "center", gap: 1 }}>
                                     <LocationOnOutlinedIcon fontSize='small' />
                                     <Typography variant='h6'  >{employee.designation}</Typography>
                                 </Box>

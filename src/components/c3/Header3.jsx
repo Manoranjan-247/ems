@@ -13,19 +13,21 @@ import {
     Typography,
 } from '@mui/material';
 import { Box } from '@mui/material';
-
+import { useMediaQuery, useTheme } from '@mui/material';
 const Header3 = () => {
+     const theme = useTheme();
+    const isMobile = useMediaQuery(theme.breakpoints.down('sm'));  //screen < 600px
     const { sidebarOpen, toggleSidebar } = useLayoutContext();
     const { logout } = useAuth()
     return (
         <Box sx={{ display: "flex", alignItems: "center", justifyContent: "space-between", px: 4, py:0.8, borderBottom: '1px solid #e0e0e0' }}>
 
             <Box sx={{ display: "flex", alignItems: "center", gap: 4 }} >
-                <MenuIcon  sx={{cursor:'pointer'}} onClick={toggleSidebar}/>
-                <Typography variant='h5'>Employee Management System</Typography>
+                <MenuIcon  sx={{cursor:'pointer', display:{xs:"none", sm:"none", md:"block"}}} onClick={toggleSidebar}/>
+                <Typography variant='h5' color='primary'>{isMobile ? "EMS" : "Employee Management System"}</Typography>
             </Box>
             <Box sx={{ display: "flex", alignItems: "center", gap: 4 }}>
-                <Typography variant='h5'>Admin</Typography>
+                {/* <Typography variant='h5'>Admin</Typography> */}
                 <ProfileDropdown  logout = {logout} />
             </Box >
 
@@ -54,7 +56,7 @@ function ProfileDropdown({logout}) {
                 <IconButton onClick={handleClick} size="small" sx={{ ml: 2 }}>
                     <Avatar
                         sx={{ width: 40, height: 40 }}
-                        src="https://i.pravatar.cc/300"
+                        src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT1oyt9166XWnxUIF4AgPIJSA2AfNh1ebiRig&s"
                         alt="Profile"
                     />
                 </IconButton>
@@ -88,10 +90,10 @@ function ProfileDropdown({logout}) {
                 transformOrigin={{ horizontal: 'right', vertical: 'top' }}
                 anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
             >
-                <MenuItem onClick={() => alert('Go to profile')}>
+                <MenuItem onClick={() => alert('Only for Demo')}>
                     <Typography variant="inherit">Profile</Typography>
                 </MenuItem>
-                <MenuItem onClick={() => alert('Go to settings')}>
+                <MenuItem onClick={() => alert('Only for Demo')}>
                     <Typography variant="inherit">Settings</Typography>
                 </MenuItem>
                 <MenuItem onClick={logout}>
