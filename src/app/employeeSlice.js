@@ -138,7 +138,7 @@ const employeeSlice = createSlice({
             }
           },
           {
-            empId: "EMP127",
+            empId: "EMP129",
             fullName: "Khitish padhihary",
             email: "khitish@example.com",
             phoneNumber: "9876543210",

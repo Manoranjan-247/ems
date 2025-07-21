@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { styled } from '@mui/material/styles';
 import KeyboardBackspaceIcon from '@mui/icons-material/KeyboardBackspace';
 import Paper from '@mui/material/Paper';
-import { Box, Typography, Button, Grid, TextField, MenuItem, Avatar, FormControlLabel, Checkbox } from '@mui/material';
+import { Box, Typography, Button, Grid, TextField, MenuItem, Avatar, FormControlLabel, Checkbox, Snackbar, Alert } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -111,7 +111,7 @@ const Emp = () => {
   });
 
   const { register, handleSubmit, formState, setValue, reset } = form;
-  const { errors } = formState
+  const { errors, isDirty, isValid } = formState
 
 
   const dispatch = useDispatch();
@@ -119,7 +119,8 @@ const Emp = () => {
   const [selectedImage, setSelectedImage] = useState(null);
   const [imagePreview, setImagePreview] = useState(null);
   const [isAdmin, setIsAdmin] = useState(false);
-
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState("");
   //code for edit 
   const { id } = useParams();
   const isEditMode = Boolean(id);
@@ -192,7 +193,19 @@ const Emp = () => {
       dispatch(addEmployee(formatedData));
     }
 
-    navigate('/employees')
+    setSnackbarOpen(true);
+    setSnackbarMessage(isEditMode ? "Employee updated successfully" : "Employee added successfully")
+    setTimeout(() => {
+      navigate('/employees')
+    }, 5000)
+
+  }
+
+  const handleClose = (e, reason) => {
+    if (reason == "clickaway") {
+      return;
+    }
+    setSnackbarOpen(false);
   }
 
   return (
@@ -385,12 +398,20 @@ const Emp = () => {
             {/* Submit Button */}
             <Grid size={{ xs: 12, md: 12 }} sx={{ mt: 3 }}>
               <Box sx={{ display: 'flex', gap: 2, justifyContent: 'flex-end' }}>
-                <Button variant="outlined" onClick={handleclick}>
+                {!isEditMode && <Button type='button' variant="outlined" onClick={() => { reset() }}>
+                  Reset
+                </Button>}
+                <Button color='error' variant="outlined" onClick={handleclick}>
                   Cancel
                 </Button>
-                <Button variant="contained" color="primary" type='submit'>
+                <Button variant="contained" color="success" type='submit'>
                   {isEditMode ? "Update Employee" : "Add Employee"}
                 </Button>
+                <Snackbar open={snackbarOpen} autoHideDuration={5000} onClose={handleClose} anchorOrigin={{ vertical: 'top', horizontal: 'right' }}>
+                  <Alert severity='success' variant='filled' sx={{ width: "300px" }} onClose={handleClose}>
+                    {snackbarMessage}
+                  </Alert>
+                </Snackbar>
               </Box>
             </Grid>
           </Grid>

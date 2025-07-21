@@ -15,7 +15,11 @@ import store from './app/store'
 import AddEmployee from './components/employee/AddEmployee'
 import Emp from './components/employee/Emp'
 import EmployeeDetails from './components/employee/EmployeeDetails'
-import EmployeeDetails2 from './components/employee/EmployeeDetails2'
+// import EmployeeDetails2 from './components/employee/EmployeeDetails2'
+import EmployeeDetailsShimmer from './components/employee/EmployeeDetailsShimmer'
+import { lazy, Suspense } from 'react'
+
+const EmployeeDetails2 = lazy(()=>import('./components/employee/EmployeeDetails2'))
 function App() {
 
 
@@ -32,7 +36,10 @@ function App() {
                   <Route path='employees' element={<EmployeeList />} />
                   <Route path='employees/new' element={<Emp />} />
                   <Route path='employee-edit/:id' element={<Emp />} />
-                  <Route path="/employee-details/:id" element={<EmployeeDetails2 />} />
+                  <Route path="/employee-details/:id"
+                    element={<Suspense fallback={<EmployeeDetailsShimmer />} >
+                      <EmployeeDetails2 />
+                    </Suspense>} />
                 </Route>
                 {/* Protected Route */}
               </Routes>
