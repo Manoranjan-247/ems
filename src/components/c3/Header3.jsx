@@ -62,10 +62,10 @@ function ProfileDropdown({ logout, useConfirmDialog }) {
 
     return (
         <Box sx={{ display: 'flex', alignItems: 'center', textAlign: 'center' }}>
-            <Tooltip title="Account settings">
+            <Tooltip title="profile">
                 <IconButton onClick={handleClick} size="small" sx={{ ml: 2 }}>
                     <Avatar
-                        sx={{ width: 40, height: 40 }}
+                        sx={{ width: 40, height: 40 , mr:{md:3}}}
                         src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT1oyt9166XWnxUIF4AgPIJSA2AfNh1ebiRig&s"
                         alt="Profile"
                     />
