@@ -14,21 +14,22 @@ import {
 } from '@mui/material';
 import { Box } from '@mui/material';
 import { useMediaQuery, useTheme } from '@mui/material';
+import { useConfirmDialog } from '../context/ConfirmDialogContext';
 const Header3 = () => {
-     const theme = useTheme();
-    const isMobile = useMediaQuery(theme.breakpoints.down('sm'));  //screen < 600px
+    const theme = useTheme();
+    const isMobile = useMediaQuery(theme.breakpoints.down('md'));  //screen < 600px
     const { sidebarOpen, toggleSidebar } = useLayoutContext();
     const { logout } = useAuth()
     return (
-        <Box sx={{ display: "flex", alignItems: "center", justifyContent: "space-between", px: 4, py:0.8, borderBottom: '1px solid #e0e0e0' }}>
+        <Box sx={{ display: "flex", alignItems: "center", justifyContent: "space-between", px: 4, py: 0.8, borderBottom: '1px solid #e0e0e0' }}>
 
             <Box sx={{ display: "flex", alignItems: "center", gap: 4 }} >
-                <MenuIcon  sx={{cursor:'pointer', display:{xs:"none", sm:"none", md:"block"}}} onClick={toggleSidebar}/>
+                <MenuIcon sx={{ cursor: 'pointer', display: { xs: "none", sm: "none", md: "none", lg: "block" } }} onClick={toggleSidebar} />
                 <Typography variant='h5' color='primary'>{isMobile ? "EMS" : "Employee Management System"}</Typography>
             </Box>
             <Box sx={{ display: "flex", alignItems: "center", gap: 4 }}>
                 {/* <Typography variant='h5'>Admin</Typography> */}
-                <ProfileDropdown  logout = {logout} />
+                <ProfileDropdown logout={logout} useConfirmDialog={useConfirmDialog} />
             </Box >
 
         </Box>
@@ -38,9 +39,10 @@ const Header3 = () => {
 export default Header3;
 
 
-function ProfileDropdown({logout}) {
+function ProfileDropdown({ logout, useConfirmDialog }) {
     const [anchorEl, setAnchorEl] = useState(null);
     const open = Boolean(anchorEl);
+    const confirmDialog = useConfirmDialog();
 
     const handleClick = (event) => {
         setAnchorEl(event.currentTarget);
@@ -49,6 +51,14 @@ function ProfileDropdown({logout}) {
     const handleClose = () => {
         setAnchorEl(null);
     };
+
+    const handleLogout = async () => {
+        const yes = await confirmDialog("Do you really want to logout")
+        if (yes) {
+            logout()
+        }
+
+    }
 
     return (
         <Box sx={{ display: 'flex', alignItems: 'center', textAlign: 'center' }}>
@@ -96,7 +106,7 @@ function ProfileDropdown({logout}) {
                 <MenuItem onClick={() => alert('Only for Demo')}>
                     <Typography variant="inherit">Settings</Typography>
                 </MenuItem>
-                <MenuItem onClick={logout}>
+                <MenuItem onClick={handleLogout}>
                     <Typography variant="inherit">Logout</Typography>
                 </MenuItem>
             </Menu>

@@ -1,12 +1,13 @@
 // src/components/LoginPage.jsx
-import React from "react";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
-import { Box, Button, TextField, Typography } from "@mui/material";
+import { Box, Button, IconButton, InputAdornment, TextField, Typography } from "@mui/material";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { useAuth } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 import PeopleAltOutlinedIcon from '@mui/icons-material/PeopleAltOutlined';
+import { Visibility, VisibilityOff } from "@mui/icons-material";
 
 
 const schema = yup.object().shape({
@@ -17,6 +18,10 @@ const schema = yup.object().shape({
 const LoginPage = () => {
     const { login } = useAuth();
     const navigate = useNavigate();
+    const [showPassword, setShowPassword] = useState(false);
+    const handleTogglePassword = () => {
+        setShowPassword((prevState) => !prevState);
+    };
 
     const {
         register,
@@ -55,13 +60,13 @@ const LoginPage = () => {
                 justifyContent: 'center',
                 mb: 1,
             }} > <PeopleAltOutlinedIcon color="primary" fontSize="large" /> </Box>
-            <Typography variant="h4" marginBottom={1} component='div' sx={{display:"flex", justifyContent:"center", fontWeight:"bold"}}>
+            <Typography variant="h4" marginBottom={1} component='div' sx={{ display: "flex", justifyContent: "center", fontWeight: "bold" }}>
                 Welcome Back
             </Typography>
 
-            <Typography variant="body2" color="text.secondary" marginBottom={1} sx={{display:"flex", justifyContent:"center"}}>
+            <Typography variant="body2" color="text.secondary" marginBottom={1} sx={{ display: "flex", justifyContent: "center" }}>
                 Sign in to your Employee Management System
-              </Typography>
+            </Typography>
 
             <form onSubmit={handleSubmit(onSubmit)}>
                 <TextField
@@ -77,7 +82,7 @@ const LoginPage = () => {
 
                 <TextField
                     label="Password"
-                    type="password"
+                    type={showPassword ? "text" : "password"}
                     variant="outlined"
                     fullWidth
                     margin="normal"
@@ -85,6 +90,21 @@ const LoginPage = () => {
                     error={!!errors.password}
                     helperText={errors.password?.message}
                     placeholder="* * * * * * * * *"
+                    slotProps={{
+                        input: {
+                            endAdornment: (
+                                <InputAdornment position="end">
+                                    <IconButton
+                                        aria-label="toggle password visibility"
+                                        onClick={handleTogglePassword}
+                                        edge="end"
+                                    >
+                                        {showPassword ? <VisibilityOff /> : <Visibility />}
+                                    </IconButton>
+                                </InputAdornment>
+                            ),
+                        },
+                    }}
                 />
 
                 {errors.root && (

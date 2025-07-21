@@ -55,7 +55,7 @@ const EmployeeDetails2 = () => {
                             <Box sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
                                 <Box sx={{ display: "flex", gap: 2, alignItems: "center" }}>
                                     <Typography variant='h4' fontWeight={600}>{employee.fullName}</Typography>
-                                    <Chip label={employee.status} variant='contained' color='success' />
+                                    <Chip label={employee.status} variant='filled' color={employee.status === "On Leave" ? 'error' : 'success'} />
                                     {employee.isAdmin && <Chip label='Admin' variant='outlined' color='primary' />}
                                 </Box>
                                 <Box>

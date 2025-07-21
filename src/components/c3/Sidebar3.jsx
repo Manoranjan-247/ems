@@ -18,7 +18,7 @@ const navigation = [
 const Sidebar3 = () => {
   const { sidebarOpen, setSidebarOpen } = useLayoutContext();
   const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
+  const isMobile = useMediaQuery(theme.breakpoints.down('lg'));
 
   useEffect(() => {
     if (isMobile && sidebarOpen) {

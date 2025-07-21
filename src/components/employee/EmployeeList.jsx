@@ -22,12 +22,15 @@ import ShieldIcon from '@mui/icons-material/Shield';
 import GppGoodOutlinedIcon from '@mui/icons-material/GppGoodOutlined';
 import GppBadOutlinedIcon from '@mui/icons-material/GppBadOutlined';
 import { useMediaQuery, useTheme } from '@mui/material';
+import { useConfirmDialog } from '../context/ConfirmDialogContext';
 const EmployeeList = () => {
+
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));  //screen < 600px
   const employees = useSelector((store) => store.employee.employees)
   // console.log("Employee data: ", employees);
   const navigate = useNavigate();
+  const confirmDialog = useConfirmDialog();
   const [searchQuery, setSearchQuery] = useState('');
 
   const [page, setPage] = useState(0); // MUI TablePagination is 0-indexed
@@ -57,75 +60,89 @@ const EmployeeList = () => {
   );
 
 
+
   const handleClick = () => {
     navigate('/employees/new')
   }
 
-  const generatePDF = async (emp) => {
-    const container = document.createElement('div');
-    document.body.appendChild(container);
-    container.style.position = 'absolute';
-    container.style.top = '-10000px'; //hide from screen
-
-    const root = createRoot(container);
-    root.render(<IDCard emp={emp} />)
-
-    setTimeout(async () => {
-      const canvas = await html2canvas(container.firstChild);
-      const imgData = canvas.toDataURL('image/png');
-
-      const pdf = new jsPDF({
-        orientation: 'landscape',
-        unit: 'px',
-        format: [300, 250]
-      })
-
-      pdf.addImage(imgData, 'PNG', 0, 0, 300, 250);
-      pdf.save(`${emp.fullName}_IDCard.pdf`);
-
-      root.unmount();
-      document.body.removeChild(container);
-    }, 500)
-
+  const handleEdit = async (empId) => {
+    const yes = await confirmDialog("Do you really want to edit this employee ?");
+    if (yes) {
+      navigate(`/employee-edit/${empId}`)
+    }
   }
 
-  const handleExportToExcel = () => {
-    const exportData = employees.map(emp => ({
-      "Employee ID": emp.empId,
-      "Full Name": emp.fullName,
-      "Email": emp.email,
-      "Phone Number": emp.phoneNumber,
-      "Designation": emp.designation,
-      "Department": emp.department,
-      "Joining Date": emp.joiningDate,
-      "Employee Type": emp.employeeType,
-      "Work Location": emp.workLocation,
-      "Status": emp.status,
-      "Is Admin": emp.isAdmin ? "Yes" : "No",
-      "Manager ID/Name": emp.managerNameOrId,
-      "Skills": emp.skills.join(', '),
-      "Date of Birth": emp.dateOfBirth,
-      "Emergency Contact Name": emp.emergencyContact?.fullName || '',
-      "Emergency Contact Relationship": emp.emergencyContact?.relationship || '',
-      "Emergency Contact Phone": emp.emergencyContact?.phoneNumber || ''
-    }));
+  const generatePDF = async (emp) => {
+    const yes = await confirmDialog("Do you really want to Generate ID card ?");
+    if (yes) {
+      const container = document.createElement('div');
+      document.body.appendChild(container);
+      container.style.position = 'absolute';
+      container.style.top = '-10000px'; //hide from screen
 
-    const workSheet = XLSX.utils.json_to_sheet(exportData);
+      const root = createRoot(container);
+      root.render(<IDCard emp={emp} />)
 
-    // Auto-width columns based on content
-    const maxWidths = exportData.reduce((widths, row) => {
-      return Object.keys(row).map((key, i) => {
-        const valueLength = String(row[key]).length;
-        return Math.max(widths[i] || key.length, valueLength);
-      });
-    }, []);
+      setTimeout(async () => {
+        const canvas = await html2canvas(container.firstChild);
+        const imgData = canvas.toDataURL('image/png');
 
-    workSheet['!cols'] = maxWidths.map(w => ({ wch: w + 2 })); // +2 padding
-    const workBook = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(workBook, workSheet, "Employees");
+        const pdf = new jsPDF({
+          orientation: 'landscape',
+          unit: 'px',
+          format: [300, 250]
+        })
 
-    //from video
-    XLSX.writeFile(workBook, "MyExcel.xlsx");
+        pdf.addImage(imgData, 'PNG', 0, 0, 300, 250);
+        pdf.save(`${emp.fullName}_IDCard.pdf`);
+
+        root.unmount();
+        document.body.removeChild(container);
+      }, 500)
+    }
+  }
+
+  const handleExportToExcel = async () => {
+    const yes = await confirmDialog("Do you really want to export Excel file ?");
+
+    if (yes) {
+      const exportData = employees.map(emp => ({
+        "Employee ID": emp.empId,
+        "Full Name": emp.fullName,
+        "Email": emp.email,
+        "Phone Number": emp.phoneNumber,
+        "Designation": emp.designation,
+        "Department": emp.department,
+        "Joining Date": emp.joiningDate,
+        "Employee Type": emp.employeeType,
+        "Work Location": emp.workLocation,
+        "Status": emp.status,
+        "Is Admin": emp.isAdmin ? "Yes" : "No",
+        "Manager ID/Name": emp.managerNameOrId,
+        "Skills": emp.skills.join(', '),
+        "Date of Birth": emp.dateOfBirth,
+        "Emergency Contact Name": emp.emergencyContact?.fullName || '',
+        "Emergency Contact Relationship": emp.emergencyContact?.relationship || '',
+        "Emergency Contact Phone": emp.emergencyContact?.phoneNumber || ''
+      }));
+
+      const workSheet = XLSX.utils.json_to_sheet(exportData);
+
+      // Auto-width columns based on content
+      const maxWidths = exportData.reduce((widths, row) => {
+        return Object.keys(row).map((key, i) => {
+          const valueLength = String(row[key]).length;
+          return Math.max(widths[i] || key.length, valueLength);
+        });
+      }, []);
+
+      workSheet['!cols'] = maxWidths.map(w => ({ wch: w + 2 })); // +2 padding
+      const workBook = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(workBook, workSheet, "Employees");
+
+      //from video
+      XLSX.writeFile(workBook, "MyExcel.xlsx");
+    }
   }
 
   if (employees.length === 0) {
@@ -137,10 +154,10 @@ const EmployeeList = () => {
   }
   return (
     <Box sx={{ p: { xs: 1, sm: 2, md: 3 } }}>
-      <Box sx={{ display: "flex", justifyContent: "space-between", alignItems:"center", gap: 2 }}>
+      <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: 2 }}>
         <Box>
-          <Typography variant='h4' sx={{ display: { xs: "none", sm: "none", md:"block" } }} fontWeight={600}>Employees</Typography>
-          <Typography variant='body1' mt={1} sx={{ opacity: 0.6, display: { xs: "none", sm: "none", md:"block" } }} >Manage your organization's employees</Typography>
+          <Typography variant='h4' sx={{ display: { xs: "none", sm: "none", md: "block" } }} fontWeight={600}>Employees</Typography>
+          <Typography variant='body1' mt={1} sx={{ opacity: 0.6, display: { xs: "none", sm: "none", md: "block" } }} >Manage your organization's employees</Typography>
         </Box>
 
         <Stack direction={{ xs: 'row-reverse', }} spacing={1} alignItems="flex-end">
@@ -166,7 +183,7 @@ const EmployeeList = () => {
           alignItems={{ xs: 'stretch', sm: 'center' }}
           spacing={2}
         >
-          <Typography variant='h6' fontWeight={600} sx={{display:{sx:"none", sm:"block"}}} fontSize={{ xs: '1.5rem', sm: '2rem' }}>Employees Directory</Typography>
+          <Typography variant='h6' fontWeight={600} sx={{ display: { sx: "none", sm: "block" } }} fontSize={{ xs: '1.5rem', sm: '2rem' }}>Employees Directory</Typography>
 
           <TextField
             placeholder="Search employees"
@@ -196,10 +213,10 @@ const EmployeeList = () => {
                 <TableCell align='center' sx={{ display: { xs: "none", sm: "table-cell" } }}><strong>Profile photo</strong></TableCell>
                 <TableCell align='center'><strong>Emp phone</strong></TableCell>
                 <TableCell align='center' sx={{ display: { xs: "none", sm: "table-cell" } }}><strong>Emp Id</strong></TableCell>
-                <TableCell align='center' sx={{ display: { xs: "none", sm: "none", md:"table-cell" } }}><strong>Designation</strong></TableCell>
-                <TableCell align='center' sx={{ display: { xs: "none", sm: "none", md:"table-cell" } }}><strong>Department</strong></TableCell>
+                <TableCell align='center' sx={{ display: { xs: "none", sm: "none", md: "table-cell" } }}><strong>Designation</strong></TableCell>
+                <TableCell align='center' sx={{ display: { xs: "none", sm: "none", md: "table-cell" } }}><strong>Department</strong></TableCell>
                 <TableCell align='center' sx={{ display: { xs: "none", sm: "table-cell" } }}><strong>Status</strong></TableCell>
-                <TableCell align='center' sx={{ display: { xs: "none", sm: "none", md:"table-cell" } }}><strong>isAdmin</strong></TableCell>
+                <TableCell align='center' sx={{ display: { xs: "none", sm: "none", md: "table-cell" } }}><strong>isAdmin</strong></TableCell>
                 <TableCell align='center'><strong>Actions</strong></TableCell>
               </TableRow>
             </TableHead>
@@ -223,13 +240,13 @@ const EmployeeList = () => {
 
                     <TableCell align='center'>{emp.phoneNumber}</TableCell>
                     <TableCell align='center' sx={{ display: { xs: "none", sm: "table-cell" } }}>{emp.empId}</TableCell>
-                    <TableCell align='center' sx={{ display: { xs: "none", sm: "none", md:"table-cell" } }}>{emp.designation}</TableCell>
-                    <TableCell align='center' sx={{ display: { xs: "none", sm: "none", md:"table-cell" } }}>{emp.department}</TableCell>
+                    <TableCell align='center' sx={{ display: { xs: "none", sm: "none", md: "table-cell" } }}>{emp.designation}</TableCell>
+                    <TableCell align='center' sx={{ display: { xs: "none", sm: "none", md: "table-cell" } }}>{emp.department}</TableCell>
                     <TableCell align='center' sx={{ display: { xs: "none", sm: "table-cell" } }}>
                       <Chip label={emp.status} color={emp.status === "Active" ? "success" : emp.status === "On Leave" ? "error" : "default"} variant="outlined"
                       />
                     </TableCell>
-                    <TableCell align='center' sx={{ display: { xs: "none", sm: "none", md:"table-cell" } }}>
+                    <TableCell align='center' sx={{ display: { xs: "none", sm: "none", md: "table-cell" } }}>
                       {emp.isAdmin === true ? <GppGoodOutlinedIcon color='success' fontSize='large' /> : <GppBadOutlinedIcon color='error' fontSize='large' />}
                     </TableCell>
                     <TableCell align='center'>
@@ -240,7 +257,7 @@ const EmployeeList = () => {
                         gap: 1
                       }}>
                         <Tooltip title="edit details" >
-                          <EditIcon color='primary' sx={{ cursor: "pointer" }} fontSize='large' onClick={() => navigate(`/employee-edit/${emp.empId}`)} />
+                          <EditIcon color='primary' sx={{ cursor: "pointer" }} fontSize='large' onClick={() => handleEdit(emp.empId)} />
                         </Tooltip>
                         <Tooltip title="generate ID card">
                           <CreditCardOutlinedIcon color='primary' sx={{ cursor: "pointer" }} fontSize='large' onClick={() => generatePDF(emp)} />

@@ -18,7 +18,7 @@ import EmployeeDetails from './components/employee/EmployeeDetails'
 // import EmployeeDetails2 from './components/employee/EmployeeDetails2'
 import EmployeeDetailsShimmer from './components/employee/EmployeeDetailsShimmer'
 import { lazy, Suspense } from 'react'
-
+import { ConfirmDialogProvider } from './components/context/ConfirmDialogContext'
 const EmployeeDetails2 = lazy(()=>import('./components/employee/EmployeeDetails2'))
 function App() {
 
@@ -26,6 +26,7 @@ function App() {
   return (
     <>
       <Provider store={store}>
+        <ConfirmDialogProvider>
         <LayoutProvider>
           <AuthProvider>
             <BrowserRouter >
@@ -46,6 +47,7 @@ function App() {
             </BrowserRouter>
           </AuthProvider>
         </LayoutProvider>
+        </ConfirmDialogProvider>
       </Provider>
     </>
   )

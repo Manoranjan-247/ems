@@ -197,7 +197,7 @@ const Emp = () => {
     setSnackbarMessage(isEditMode ? "Employee updated successfully" : "Employee added successfully")
     setTimeout(() => {
       navigate('/employees')
-    }, 5000)
+    }, 2000)
 
   }
 
@@ -407,7 +407,7 @@ const Emp = () => {
                 <Button variant="contained" color="success" type='submit'>
                   {isEditMode ? "Update Employee" : "Add Employee"}
                 </Button>
-                <Snackbar open={snackbarOpen} autoHideDuration={5000} onClose={handleClose} anchorOrigin={{ vertical: 'top', horizontal: 'right' }}>
+                <Snackbar open={snackbarOpen} autoHideDuration={2000} onClose={handleClose} anchorOrigin={{ vertical: 'top', horizontal: 'right' }}>
                   <Alert severity='success' variant='filled' sx={{ width: "300px" }} onClose={handleClose}>
                     {snackbarMessage}
                   </Alert>
