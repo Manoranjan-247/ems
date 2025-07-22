@@ -20,7 +20,17 @@ const schema = yup.object().shape({
     .max(50, "Full Name must be at most 50 characters."),
   email: yup.string()
     .email("Invalid email format")
-    .required("Email is required"),
+    .required("Email is required")
+    .test(
+      "unique-email",
+      "This email is already registered",
+      function(value){
+        if(!value) return true;
+
+        
+      }
+    )
+    ,
   phoneNumber: yup
     .string()
     .required("Phone number is required")
@@ -102,18 +112,37 @@ const schema = yup.object().shape({
 
 
 const Emp = () => {
-      const theme = useTheme();
-      const isMobile = useMediaQuery(theme.breakpoints.down('sm'));  //screen < 600px
-      const isSmallMobile = useMediaQuery('(min-width:390px) and (max-width:490px)');
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));  //screen < 600px
+  const isSmallMobile = useMediaQuery('(min-width:390px) and (max-width:490px)');
 
   const form = useForm({
     defaultValues: {
-      isAdmin: false
+      fullName: "",
+      email: "",
+      phoneNumber: "",
+      dateOfBirth: "",
+      skills: "",
+      profilePicture: "",
+      empId: "",
+      department: "",
+      designation: "",
+      joiningDate: "",
+      employeeType: "",
+      workLocation: "",
+      status: "",
+      managerNameOrId: "",
+      isAdmin: false,
+      emergencyContact: {
+        fullName: "",
+        relationship: "",
+        phoneNumber: ""
+      }
     },
     resolver: yupResolver(schema)
   });
 
-  const { register, handleSubmit, formState, setValue, reset } = form;
+  const { register, handleSubmit, formState, setValue, reset, watch } = form;
   const { errors, isDirty, isValid } = formState
 
 
@@ -130,12 +159,43 @@ const Emp = () => {
   const employee = useSelector((store) => store.employee.employees.find((emp) => emp.empId === id));
 
   useEffect(() => {
+    if(!isEditMode){
+      reset({
+        fullName:"",
+        email:"",
+        phoneNumber:"",
+        dateOfBirth:"",
+        skills: "",
+        profilePicture:"",
+        empId:"",
+        department:"",
+        designation:"",
+        joiningDate:"",
+        employeeType:"",
+        workLocation:"",
+        status:"",
+        managerNameOrId:"",
+        isAdmin: false,
+        emergencyContact:{
+          fullName:"",
+          relationship:"",
+          phoneNumber:""
+        }
+      });
+      setImagePreview(null);
+      setSelectedImage(null);
+      setIsAdmin(false);
+    }
     if (isEditMode) {
       if (employee) {
+        console.log(employee.status);
+        console.log(employee.employeeType);
         const formValues = {
           ...employee,
           skills: Array.isArray(employee.skills) ? employee.skills.join(', ') : employee.skills,
+          
         }
+        console.log(formValues)
         reset(formValues);
         setImagePreview(employee.profilePicture);
         setSelectedImage(employee.profilePicture);
@@ -196,11 +256,18 @@ const Emp = () => {
       dispatch(addEmployee(formatedData));
     }
 
+    // if(!isDirty && isEditMode) {
+    //   setTimeout(()=>{
+    //     navigate('/employees')
+    //   }, 500)
+
+    //   return;
+    // }
     setSnackbarOpen(true);
     setSnackbarMessage(isEditMode ? "Employee updated successfully" : "Employee added successfully")
     setTimeout(() => {
       navigate('/employees')
-    }, 2000)
+    }, 1000)
 
   }
 
@@ -210,6 +277,10 @@ const Emp = () => {
     }
     setSnackbarOpen(false);
   }
+
+  // Watch the values to get current form state
+  const watchedEmployeeType = watch("employeeType");
+  const watchedStatus = watch("status");
 
   return (
     <Box p={2}>
@@ -244,7 +315,7 @@ const Emp = () => {
         <Box sx={{ flexGrow: 1 }}>
           <Grid container spacing={2}>
             <Grid size={{ md: 4 }} sx={{ p: 2, boxShadow: "rgba(0, 0, 0, 0.16) 0px 1px 4px" }}>
-              <Typography variant='h5' fontWeight={600} mb={2}>  Personal Information  </Typography>
+              <Typography variant='h6' sx={{ fontSize: { xs: "1.5rem", lg: "2rem" } }} mb={2}>  Personal Information  </Typography>
 
               {/* Inner Grid Container */}
               <Grid container spacing={2}>
@@ -254,10 +325,10 @@ const Emp = () => {
                 <Grid size={{ xs: 12, sm: 6, md: 12 }}>
                   <TextField label="Email" type='email' fullWidth variant="outlined" {...register("email")} error={!!errors.email} helperText={errors.email?.message} />
                 </Grid>
-                <Grid size={{ xs: 12, sm: 6, md: 6 }}>
+                <Grid size={{ xs: 12, sm: 6, md: 12, lg: 6 }}>
                   <TextField label="Phone Number" type='text' fullWidth variant="outlined" {...register("phoneNumber")} error={!!errors.phoneNumber} helperText={errors.phoneNumber?.message} />
                 </Grid>
-                <Grid size={{ xs: 12, sm: 6, md: 6 }}>
+                <Grid size={{ xs: 12, sm: 6, md: 12, lg: 6 }}>
                   <TextField label="Date of Birth" type='date' fullWidth variant="outlined" InputLabelProps={{ shrink: true }} {...register("dateOfBirth")} error={!!errors.dateOfBirth} helperText={errors.dateOfBirth?.message} />
                 </Grid>
                 <Grid size={{ xs: 12, md: 12 }}>
@@ -266,7 +337,7 @@ const Emp = () => {
 
                 {/* Image Upload Section */}
                 <Grid size={{ md: 12 }}>
-                  <Typography variant="h6" >Profile Picture</Typography>
+                  <Typography variant="h6" sx={{fontSize:{xs:"1rem"}}} >Profile Picture</Typography>
                   <Box sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: 2 }}>
                     {/* {imagePreview && (
                       <Avatar
@@ -280,7 +351,7 @@ const Emp = () => {
                       onClick={triggerFileInput}
                       sx={{ width: 'fit-content' }}
                     >
-                      {selectedImage ? 'Change Image' : 'Upload Image'}
+                      {selectedImage ? 'Change ' : 'Upload '}
                     </Button>
                     <input
 
@@ -299,7 +370,7 @@ const Emp = () => {
                     />
                     {selectedImage && (
                       <Typography variant="caption" color="textSecondary">
-                        Selected: {selectedImage.name}
+                        Image Selected
                       </Typography>
                     )}
                     {imagePreview && (
@@ -322,7 +393,7 @@ const Emp = () => {
             </Grid>
 
             <Grid size={{ xs: 12, md: 8 }} sx={{ p: 2, boxShadow: "rgba(0, 0, 0, 0.16) 0px 1px 4px" }} spacing={2}>
-              <Typography variant='h5' fontWeight={600} mb={2} >  Job Information  </Typography>
+              <Typography variant='h6' sx={{ fontSize: { xs: "1.5rem", lg: "2rem" } }} mb={2} >  Job Information  </Typography>
               <Grid container spacing={2}>
                 <Grid size={{ xs: 12, sm: 6, md: 6 }}>
                   <TextField label="Employee ID" type='text' fullWidth required variant="outlined" {...register("empId")} error={!!errors.empId} helperText={errors.empId?.message} />
@@ -334,10 +405,10 @@ const Emp = () => {
                   <TextField label="Department" type='text' fullWidth required variant="outlined" {...register("department")} error={!!errors.department} helperText={errors.department?.message} />
                 </Grid>
                 <Grid size={{ xs: 12, sm: 6, md: 6 }}>
-                  <TextField label="Joining date" type='date' fullWidth required variant="outlined" InputLabelProps={{ shrink: true }} {...register("joiningDate")} error={!!errors.joiningDate} helperText={errors.joiningDate?.message} />
+                  <TextField label="Joining date" type='date' fullWidth variant="outlined" InputLabelProps={{ shrink: true }} {...register("joiningDate")} error={!!errors.joiningDate} helperText={errors.joiningDate?.message} />
                 </Grid>
                 <Grid item size={{ xs: 12, sm: 6, md: 6 }} >
-                  <TextField label="Employee Type" select fullWidth variant="outlined" required defaultValue="" {...register("employeeType")} error={!!errors.employeeType} helperText={errors.employeeType?.message}>
+                  <TextField label="Employee Type" select fullWidth variant="outlined" value={watchedEmployeeType || ""}   {...register("employeeType")} error={!!errors.employeeType} helperText={errors.employeeType?.message}>
                     <MenuItem value="">Select Employee Type</MenuItem>
                     <MenuItem value="Full Time">Full Time</MenuItem>
                     <MenuItem value="Part Time">Part Time</MenuItem>
@@ -345,10 +416,10 @@ const Emp = () => {
                   </TextField>
                 </Grid>
                 <Grid size={{ xs: 12, sm: 6, md: 6 }}>
-                  <TextField label="Work Location" type='text' fullWidth required variant="outlined" {...register("workLocation")} error={!!errors.workLocation} helperText={errors.workLocation?.message} />
+                  <TextField label="Work Location" type='text' fullWidth variant="outlined" {...register("workLocation")} error={!!errors.workLocation} helperText={errors.workLocation?.message} />
                 </Grid>
                 <Grid item size={{ xs: 12, sm: 6, md: 6 }} >
-                  <TextField label="Status" select fullWidth variant="outlined" required defaultValue="" {...register("status")} error={!!errors.status} helperText={errors.status?.message}>
+                  <TextField label="Status" select fullWidth variant="outlined" value={watchedStatus || ""}   {...register("status")} error={!!errors.status} helperText={errors.status?.message}>
                     <MenuItem value="">Select Status</MenuItem>
                     <MenuItem value="Active">Active</MenuItem>
                     {/* <MenuItem value="Inactive">Inactive</MenuItem> */}
@@ -383,7 +454,7 @@ const Emp = () => {
             </Grid>
 
             <Grid size={{ md: 12 }} sx={{ p: 2, boxShadow: "rgba(0, 0, 0, 0.16) 0px 1px 4px" }}>
-              <Typography variant='h5' fontWeight={600} mb={2}>  Emergency Contact  </Typography>
+              <Typography variant='h6' sx={{ fontSize: { xs: "1.5rem", lg: "2rem" } }} mb={2}>  Emergency Contact  </Typography>
               <Grid container spacing={2} sx={{ mt: 1 }}>
                 <Grid size={{ xs: 12, sm: 6, md: 4 }}>
                   <TextField label=" Contact Name" type='text' fullWidth variant="outlined"  {...register("emergencyContact.fullName")} error={!!errors.emergencyContact?.fullName} helperText={errors.emergencyContact?.fullName?.message} />
@@ -425,7 +496,7 @@ const Emp = () => {
                 }}>
                   {isEditMode ? "Update Employee" : "Add Employee"}
                 </Button>
-                <Snackbar open={snackbarOpen} autoHideDuration={2000} onClose={handleClose} anchorOrigin={{ vertical: 'top', horizontal: 'right' }}>
+                <Snackbar open={snackbarOpen} autoHideDuration={1000} onClose={handleClose} anchorOrigin={{ vertical: 'top', horizontal: 'right' }}>
                   <Alert severity='success' variant='filled' sx={{ width: "300px" }} onClose={handleClose}>
                     {snackbarMessage}
                   </Alert>

@@ -93,10 +93,10 @@ const EmployeeList = () => {
         const pdf = new jsPDF({
           orientation: 'landscape',
           unit: 'px',
-          format: [300, 250]
+          format: [300, 270]
         })
 
-        pdf.addImage(imgData, 'PNG', 0, 0, 300, 250);
+        pdf.addImage(imgData, 'PNG', 0, 0, 300, 270);
         pdf.save(`${emp.fullName}_IDCard.pdf`);
 
         root.unmount();
@@ -151,7 +151,7 @@ const EmployeeList = () => {
   if (employees.length === 0) {
     return <Box sx={{ display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", gap: 2, mt: 3 }}>
       <Typography variant='h6' >No employees found</Typography>
-      <Typography variant='body1' mt={1} sx={{ opacity: 0.6 }}>  Overview of your employee management system </Typography>
+      <Typography variant='body1' mt={1} sx={{ opacity: 0.6, p:2 }}>  Overview of your employee management system </Typography>
       <Button variant='contained' onClick={handleClick}>Add First Employee</Button>
     </Box>
   }
@@ -284,6 +284,7 @@ const EmployeeList = () => {
           rowsPerPage={rowsPerPage}
           onRowsPerPageChange={handleChangeRowsPerPage}
           rowsPerPageOptions={[5, 10, 25, 50]}
+          sx={{width:{xs:"100%"}}}
         />
 
 
