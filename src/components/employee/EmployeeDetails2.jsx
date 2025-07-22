@@ -194,8 +194,8 @@ const EmployeeDetails2 = () => {
                     {/* emergency contact */}
                     <Grid size={{ xs: 12, md: 4 }} sx={{ boxShadow: "rgba(149, 157, 165, 0.2) 0px 8px 24px ", p: 2 }}>
                         <Box sx={{ display: "flex", alignItems: "center", gap: 2, mb: 2 }}>
-                            <ContactPhoneOutlinedIcon sx={{ fontSize: { xs: "1.25rem", md: "1.5rem"} }} color='primary' />
-                            <Typography variant='h6' sx={{ fontSize: { xs: "1.25rem", md: "1.5rem" } }} color='primary'>Emergency Contact</Typography>
+                            <ContactPhoneOutlinedIcon sx={{ fontSize: { xs: "1.25rem", md: "1.5rem", } }} color='primary' />
+                            <Typography variant='h6' sx={{ fontSize: { xs: "1.25rem", md: "1.3rem" } }} color='primary'>Emergency Contact</Typography>
                         </Box>
                         <Grid container spacing={2}>
                             <Grid size={{ xs: 12, sm: 6, md: 12 }}>

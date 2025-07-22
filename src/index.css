@@ -20,6 +20,7 @@
 .dashboard-grid-item {
   flex: 1 !important;
   display: flex !important;
+  color: rgb(0, 204, 255);
 }
 
 .emp-details{

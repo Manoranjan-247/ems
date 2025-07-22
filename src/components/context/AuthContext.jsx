@@ -79,7 +79,7 @@ export const AuthProvider = ({ children }) => {
 
   const login = (email, password) => {
 
-    if (email === "admin@example.com" && password === "admin123") {
+    if (email === "admin@example.com" && password === "Admin@123") {
 
       const newAuth = { isAuthenticated: true, user: { email } };
 

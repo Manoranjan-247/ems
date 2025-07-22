@@ -28,7 +28,7 @@ const EmployeeList = () => {
 
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));  //screen < 600px
-  const isSmallMobile = useMediaQuery('(min-width:360px) and (max-width:500px)');
+  const isSmallMobile = useMediaQuery('(min-width:375px) and (max-width:500px)');
 
 
   const employees = useSelector((store) => store.employee.employees)
@@ -40,7 +40,7 @@ const EmployeeList = () => {
   const [page, setPage] = useState(0); // MUI TablePagination is 0-indexed
   const [rowsPerPage, setRowsPerPage] = useState(5);
 
-  
+
 
 
   const filteredEmployees = employees.filter((emp) =>
@@ -159,14 +159,23 @@ const EmployeeList = () => {
     </Box>
   }
   return (
-    <Box sx={{ p: { xs: 1, sm: 2, md: 3 } }}>
-      <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: { md: 1, lg: 2 } }}>
+    <Box sx={{ p: { xs: 0, sm: 2, md: 3 } }}>
+      <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: { md: 1, lg: 2 }, pt:1 }}>
         <Box>
-          <Typography variant='h4' sx={{ display: { xs: "none", sm: "none", md: "block" } }} >Employees</Typography>
-          <Typography variant='body1' mt={1} sx={{ opacity: 0.6, display: { xs: "none", sm: "none", md: "block" } }} >Manage your organization's employees</Typography>
+          <Typography variant='h4' sx={{ display: { xs: "none", md: "block" } }} >Employees</Typography>
+          <Typography variant='body1' mt={1} sx={{ opacity: 0.6, display: { xs: "none", md: "block" } }} >Manage your organization's employees</Typography>
         </Box>
 
-        <Stack direction={{ xs: 'row', }} spacing={1} alignItems="flex-end" sx={{ mr: { md: 4, lg: 0 } }}>
+        <Stack
+          direction="row"
+          spacing={1}
+          sx={{
+            mr: {xs:2, md:0},
+            alignItems: "flex-end",
+            
+          }}
+        >
+
           <Button
             onClick={handleExportToExcel}
             variant="outlined"
@@ -178,7 +187,7 @@ const EmployeeList = () => {
           >
             Export
           </Button>
-          <Button variant='contained' onClick={handleClick} startIcon={<AddOutlinedIcon />}>{isSmallMobile ? "Add" : "Add employee"}</Button>
+          <Button variant='contained' onClick={handleClick} startIcon={<AddOutlinedIcon />}>ADD</Button>
         </Stack>
       </Box>
 
@@ -189,7 +198,7 @@ const EmployeeList = () => {
           alignItems={{ xs: 'stretch', sm: 'center' }}
           spacing={2}
         >
-          <Typography variant='h6'  sx={{ display: { sx: "none", sm: "block" } }} fontSize={{ xs: '1.5rem', xl: '2rem' }}>Employees Directory</Typography>
+          <Typography variant='h6' sx={{ display: { sx: "none", sm: "block" } }} fontSize={{ xs: '1.5rem', xl: '2rem' }}>Employees Directory</Typography>
 
           <TextField
             placeholder="Search employees"
@@ -213,11 +222,11 @@ const EmployeeList = () => {
         <TableContainer sx={{ width: '100%', overflowX: 'auto' }} >
           <Table>
             <TableHead>
-              <TableRow>
+              <TableRow sx={{bgcolor:"#FAF7F3", borderRadius:2}}>
                 <TableCell align='center' sx={{ fontSize: { xs: '1rem', xl: '1.15rem' } }}><strong>Sl no</strong></TableCell>
                 <TableCell align='center' sx={{ fontSize: { xs: '1rem', xl: '1.15rem' } }}><strong>Fullname</strong></TableCell>
                 <TableCell align='center' sx={{ display: { xs: "none", sm: "none", lg: "table-cell" }, fontSize: { xs: '1rem', xl: '1.15rem' } }}><strong>Profile photo</strong></TableCell>
-                {!isSmallMobile && <TableCell align='center' sx={{ fontSize: { xs: '1rem', xl: '1.15rem' } }} ><strong>Emp phone</strong></TableCell>}
+                {!isSmallMobile && <TableCell align='center' sx={{ fontSize: { xs: '1rem', xl: '1.15rem' } }} ><strong>Phone number</strong></TableCell>}
                 <TableCell align='center' sx={{ display: { xs: "none", sm: "none", md: "table-cell" }, fontSize: { xs: '1rem', xl: '1.15rem' } }}><strong>Emp Id</strong></TableCell>
                 <TableCell align='center' sx={{ display: { xs: "none", sm: "none", md: "table-cell" }, fontSize: { xs: '1rem', xl: '1.15rem' } }}><strong>Designation</strong></TableCell>
                 <TableCell align='center' sx={{ display: { xs: "none", sm: "none", lg: "table-cell" }, fontSize: { xs: '1rem', xl: '1.15rem' } }}><strong>Department</strong></TableCell>
@@ -227,7 +236,7 @@ const EmployeeList = () => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {filteredEmployees.length === 0 && searchQuery.length > 0 ? (<TableCell colSpan={10} align='center'>No employee found</TableCell> ):
+              {filteredEmployees.length === 0 && searchQuery.length > 0 ? (<TableCell colSpan={10} align='center'>No employee found!!</TableCell>) :
                 (paginatedEmployees.map((emp, idx) => (
                   <TableRow key={emp.empId}>
                     <TableCell align='center'>{page * rowsPerPage + idx + 1}</TableCell>
@@ -252,8 +261,8 @@ const EmployeeList = () => {
                       <Chip label={emp.status} color={emp.status === "Active" ? "success" : emp.status === "On Leave" ? "error" : "default"} variant="outlined"
                       />
                     </TableCell>
-                    <TableCell align='center' sx={{ display: { xs: "none", sm: "none", md: "table-cell",  } }}>
-                      {emp.isAdmin === true ? <GppGoodOutlinedIcon  color='success' /> : <GppBadOutlinedIcon color='error' fontSize='large' />}
+                    <TableCell align='center' sx={{ display: { xs: "none", sm: "none", md: "table-cell", } }}>
+                      {emp.isAdmin === true ? <GppGoodOutlinedIcon color='success' /> : <GppBadOutlinedIcon color='error' fontSize='large' />}
                     </TableCell>
                     <TableCell align='center'>
                       <Box sx={{

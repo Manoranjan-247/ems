@@ -154,7 +154,7 @@ const Emp = () => {
     phoneNumber: yup
       .string()
       .required("Phone number is required")
-      .matches(/^\+?[0-9]{10,15}$/, "Phone number must contain only digits ")
+      .matches(/^\+?[0-9]{10}$/, "Phone number must be 10 digits")
       .test(
         "unique-phone",
         "This phone number is already registered",
@@ -174,14 +174,34 @@ const Emp = () => {
       .test(
         "valid-skills",
         "Each skill must contain only letters, numbers, spaces, or + . #",
-        value => {
-          if (!value) return false;
-          const skillsArray = value.split(',').map(skill => skill.trim());
+        function (value) {
+          if (!value) return true;
+          const skillArray = value.split(',').map((skill) => skill.trim()).filter((skill) => skill !== "");
           const skillRegex = /^[A-Za-z0-9+.# ]+$/;
 
-          return skillsArray.every(skill => skillRegex.test(skill));
+          return skillArray.every(skill => skillRegex.test(skill));
         }
-      ),
+      )
+      .test(
+        "max-skills",
+        "Maximum 10 skills are allowed",
+        function (value) {
+          if (!value) return true;
+          const skillArray = value.split(',').map((skill) => skill.trim()).filter((skill) => skill !== "");
+          return skillArray.length <= 10;
+        }
+      )
+      .test(
+        "no-duplicate-skills",
+        "Duplicate skills are not allowed",
+        function(value){
+          if(!value) return true;
+          const skillArray = value.split(',').map((skill) => skill.trim()).filter((skill) => skill !== "");
+          const uniqueSkills = [...new Set(skillArray)];
+          return skillArray.length === uniqueSkills.length;
+        }
+    )
+    ,
     profilePicture: yup
       .string()
       .required("Profile picture is required")
@@ -196,16 +216,16 @@ const Emp = () => {
       .matches(
         /^[A-Za-z0-9]+$/,
         "Only letters and numbers are allowed")
-        .test(
-          "unique-empId",
-          "This Employee ID already taken",
-          function(value){
-            if(!value) return;
+      .test(
+        "unique-empId",
+        "This Employee ID already taken",
+        function (value) {
+          if (!value) return;
 
-            const isDuplicate = allEmployees.some((emp)=> emp.empId === value && (!isEditMode || emp.empId !== id));
-            return !isDuplicate;
-          }
-        ),
+          const isDuplicate = allEmployees.some((emp) => emp.empId === value && (!isEditMode || emp.empId !== id));
+          return !isDuplicate;
+        }
+      ),
     department: yup.string()
       .required("Department  is required")
       .matches(/^[A-Za-z ]+$/, "Only alphabets  are allowed."
@@ -236,7 +256,7 @@ const Emp = () => {
         .required("Phone Number is required")
         .matches(
           /^\+?[0-9]{10,15}$/,
-          "Phone number must contain only digits "
+          "Phone number must contain only digits and length should be 10-15 "
         )
     })
 
@@ -269,6 +289,9 @@ const Emp = () => {
         phoneNumber: ""
       }
     },
+    mode: "onSubmit",
+     reValidateMode:"onChange" ,  //by default  value of reValidateMode
+    // reValidateMode:"onSubmit",
     resolver: yupResolver(schema)
   });
 
@@ -328,20 +351,6 @@ const Emp = () => {
   const handleclick = () => {
     navigate("/employees")
   }
-
-  // const handleImageUpload = (event) => {
-  //   const file = event.target.files[0];
-  //   if (file) {
-  //     setSelectedImage(file);
-  //     setValue('profilePicture', file, { shouldValidate: true }); // Register file with RHF
-
-  //     const reader = new FileReader();
-  //     reader.onload = (e) => {
-  //       setImagePreview(e.target.result);
-  //     };
-  //     reader.readAsDataURL(file);
-  //   }
-  // };
 
   const handleImageUpload = (event) => {
     const file = event.target.files[0];
@@ -527,7 +536,7 @@ const Emp = () => {
                 <Grid size={{ xs: 12, sm: 6, md: 6 }}>
                   <TextField label="Joining date" type='date' fullWidth variant="outlined" InputLabelProps={{ shrink: true }} {...register("joiningDate")} error={!!errors.joiningDate} helperText={errors.joiningDate?.message} />
                 </Grid>
-                <Grid item size={{ xs: 12, sm: 6, md: 6 }} >
+                <Grid  size={{ xs: 12, sm: 6, md: 6 }} >
                   <TextField label="Employee Type" select fullWidth variant="outlined" value={watchedEmployeeType || ""}   {...register("employeeType")} error={!!errors.employeeType} helperText={errors.employeeType?.message}>
                     <MenuItem value="">Select Employee Type</MenuItem>
                     <MenuItem value="Full Time">Full Time</MenuItem>

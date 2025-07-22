@@ -19,6 +19,8 @@ import EmployeeDetails from './components/employee/EmployeeDetails'
 import EmployeeDetailsShimmer from './components/employee/EmployeeDetailsShimmer'
 import { lazy, Suspense } from 'react'
 import { ConfirmDialogProvider } from './components/context/ConfirmDialogContext'
+import Error from './components/c3/Error'
+import Home from './pages/Home'
 const EmployeeDetails2 = lazy(()=>import('./components/employee/EmployeeDetails2'))
 function App() {
 
@@ -33,7 +35,7 @@ function App() {
               <Routes>
                 <Route path='/login' element={<LoginPage />} />
                 <Route path='/' element={<ProtectedRoute><Layout3 /></ProtectedRoute>} >
-                  {/* <Route path='dashboard' element={<Dashboard />} /> */}
+                  <Route path='/' element={<Home />} />
                   <Route path='employees' element={<EmployeeList />} />
                   <Route path='employees/new' element={<Emp />} />
                   <Route path='employee-edit/:id' element={<Emp />} />
@@ -42,6 +44,7 @@ function App() {
                       <EmployeeDetails2 />
                     </Suspense>} />
                 </Route>
+                <Route path='*' element={<Error />} />
                 {/* Protected Route */}
               </Routes>
             </BrowserRouter>

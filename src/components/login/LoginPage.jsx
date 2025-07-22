@@ -28,7 +28,12 @@ const LoginPage = () => {
         handleSubmit,
         formState: { errors },
         setError,
+        
     } = useForm({
+        defaultValues:({
+            email:"admin@example.com",
+            password:"Admin@123"
+        }),
         resolver: yupResolver(schema),
     });
 

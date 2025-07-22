@@ -12,6 +12,7 @@ const ConfirmDialogUI = ({ open, message, onConfirm, onCancel }) => {
       open={open}
       onClose={onCancel}         // ✅ ESC key or backdrop click
       aria-labelledby="confirm-dialog"
+      
     >
       <DialogTitle id="confirm-dialog">Are you sure ?</DialogTitle>
       <DialogContent>{message}</DialogContent>

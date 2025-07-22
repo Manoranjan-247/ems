@@ -1,0 +1,7 @@
+@media (max-width: 389px) {
+    .align-center-389 {
+      align-items: center !important;
+      justify-content: center !important;
+    }
+  }
+  

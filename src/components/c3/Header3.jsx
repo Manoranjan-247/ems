@@ -17,11 +17,11 @@ import { useMediaQuery, useTheme } from '@mui/material';
 import { useConfirmDialog } from '../context/ConfirmDialogContext';
 const Header3 = () => {
     const theme = useTheme();
-    const isMobile = useMediaQuery(theme.breakpoints.down('md'));  //screen < 600px
+    const isMobile = useMediaQuery(theme.breakpoints.down('md'));  
     const { sidebarOpen, toggleSidebar } = useLayoutContext();
     const { logout } = useAuth()
     return (
-        <Box sx={{ display: "flex", alignItems: "center", justifyContent: "space-between", px: 4, py: 0.8, borderBottom: '1px solid #e0e0e0' }}>
+        <Box sx={{ display: "flex", alignItems: "center", justifyContent: "space-between", px: 4, py: 0.8, borderBottom: '1px solid #e0e0e0', }}>
 
             <Box sx={{ display: "flex", alignItems: "center", gap: 4 }} >
                 <MenuIcon sx={{ cursor: 'pointer', display: { xs: "none", sm: "none", md: "none", lg: "none", xl:"block" } }} onClick={toggleSidebar} />
@@ -63,9 +63,9 @@ function ProfileDropdown({ logout, useConfirmDialog }) {
     return (
         <Box sx={{ display: 'flex', alignItems: 'center', textAlign: 'center' }}>
             <Tooltip title="profile">
-                <IconButton onClick={handleClick} size="small" sx={{ ml: 2 }}>
+                <IconButton onClick={handleClick} size="small"  >
                     <Avatar
-                        sx={{ width: 40, height: 40 , mr:{md:3,lg: 0 }}}
+                        sx={{ width: 40, height: 40 , mr:{xs: 0, md:3,lg: 0 }, }}
                         src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT1oyt9166XWnxUIF4AgPIJSA2AfNh1ebiRig&s"
                         alt="Profile"
                     />
