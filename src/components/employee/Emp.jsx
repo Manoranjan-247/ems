@@ -12,109 +12,239 @@ import { addEmployee, updateEmployee } from '../../app/employeeSlice'
 import { useParams } from 'react-router-dom';
 import { useMediaQuery, useTheme } from '@mui/material';
 
-const schema = yup.object().shape({
-  fullName: yup.string()
-    .required("Full Name is required!")
-    .matches(/^[A-Za-z ]+$/, "Only alphabets and spaces are allowed.")
-    .min(2, "Full Name must be at least 2 characters.")
-    .max(50, "Full Name must be at most 50 characters."),
-  email: yup.string()
-    .email("Invalid email format")
-    .required("Email is required")
-    .test(
-      "unique-email",
-      "This email is already registered",
-      function(value){
-        if(!value) return true;
-
-        
-      }
-    )
-    ,
-  phoneNumber: yup
-    .string()
-    .required("Phone number is required")
-    .matches(
-      /^\+?[0-9]{10,15}$/,
-      "Phone number must contain only digits "
-    ),
-  dateOfBirth: yup
-    .string()
-    .required("Date of birth is required"),
-  skills: yup
-    .string()
-    .required("Skills are required")
-    .test(
-      "valid-skills",
-      "Each skill must contain only letters, numbers, spaces, or + . #",
-      value => {
-        if (!value) return false;
-        const skillsArray = value.split(',').map(skill => skill.trim());
-        const skillRegex = /^[A-Za-z0-9+.# ]+$/;
-
-        return skillsArray.every(skill => skillRegex.test(skill));
-      }
-    ),
-  profilePicture: yup
-    .string()
-    .required("Profile picture is required")
-    .matches(
-      /^data:image\/(png|jpe?g|webp);base64,/i,
-      "Only PNG, JPG, JPEG, or WEBP base64 images are allowed"
-    ),
-
-  empId: yup.
-    string()
-    .required("Employee ID is required")
-    .matches(
-      /^[A-Za-z0-9]+$/,
-      "Only letters and numbers are allowed"
-    ),
-  department: yup.string()
-    .required("Department ID is required")
-    .matches(/^[A-Za-z ]+$/, "Only alphabets  are allowed."
-    ),
-  designation: yup.string()
-    .required("Designation is required")
-    .matches(
-      /^[A-Za-z0-9 ]+$/,
-      "Only alphabets, numbers and spaces are allowed."
-    ),
-  joiningDate: yup.string()
-    .required("JoiningDate is required!"),
-  employeeType: yup.string().required("Employee Type is required"),
-  workLocation: yup.string().required("Worklocation Type is required"),
-  status: yup.string().required("Status is required"),
-  managerNameOrId: yup.string().required("Manager name or Id is required"),
-  isAdmin: yup.boolean().required("Is Admin is required!"),
-  emergencyContact: yup.object({
-    fullName: yup.string()
-      .required("Fullname is required")
-      .matches(/^[A-Za-z ]+$/, "Only alphabets and spaces are allowed")
-      .min(2, "Name must be at least 2 characters")
-      .max(50, "Name must be at most 50 characters"),
-    relationship: yup.string()
-      .required("Relationship is required")
-      .matches(/^[A-Za-z ]+$/, "Only alphabets and spaces are allowed"),
-    phoneNumber: yup.string()
-      .required("Phone Number is required")
-      .matches(
-        /^\+?[0-9]{10,15}$/,
-        "Phone number must contain only digits "
-      )
-  })
+// const schema = yup.object().shape({
+//   fullName: yup.string()
+//     .required("Full Name is required!")
+//     .matches(/^[A-Za-z ]+$/, "Only alphabets and spaces are allowed.")
+//     .min(2, "Full Name must be at least 2 characters.")
+//     .max(50, "Full Name must be at most 50 characters."),
+//   email: yup.string()
+//     .email("Invalid email format")
+//     .required("Email is required")
+//     .test(
+//       "unique-email",
+//       "This email is already registered",
+//       function(value){
+//         if(!value) return true;
 
 
+//       }
+//     )
+//     ,
+//   phoneNumber: yup
+//     .string()
+//     .required("Phone number is required")
+//     .matches(
+//       /^\+?[0-9]{10,15}$/,
+//       "Phone number must contain only digits "
+//     ),
+//   dateOfBirth: yup
+//     .string()
+//     .required("Date of birth is required"),
+//   skills: yup
+//     .string()
+//     .required("Skills are required")
+//     .test(
+//       "valid-skills",
+//       "Each skill must contain only letters, numbers, spaces, or + . #",
+//       value => {
+//         if (!value) return false;
+//         const skillsArray = value.split(',').map(skill => skill.trim());
+//         const skillRegex = /^[A-Za-z0-9+.# ]+$/;
+
+//         return skillsArray.every(skill => skillRegex.test(skill));
+//       }
+//     ),
+//   profilePicture: yup
+//     .string()
+//     .required("Profile picture is required")
+//     .matches(
+//       /^data:image\/(png|jpe?g|webp);base64,/i,
+//       "Only PNG, JPG, JPEG, or WEBP base64 images are allowed"
+//     ),
+
+//   empId: yup.
+//     string()
+//     .required("Employee ID is required")
+//     .matches(
+//       /^[A-Za-z0-9]+$/,
+//       "Only letters and numbers are allowed"
+//     ),
+//   department: yup.string()
+//     .required("Department ID is required")
+//     .matches(/^[A-Za-z ]+$/, "Only alphabets  are allowed."
+//     ),
+//   designation: yup.string()
+//     .required("Designation is required")
+//     .matches(
+//       /^[A-Za-z0-9 ]+$/,
+//       "Only alphabets, numbers and spaces are allowed."
+//     ),
+//   joiningDate: yup.string()
+//     .required("JoiningDate is required!"),
+//   employeeType: yup.string().required("Employee Type is required"),
+//   workLocation: yup.string().required("Worklocation Type is required"),
+//   status: yup.string().required("Status is required"),
+//   managerNameOrId: yup.string().required("Manager name or Id is required"),
+//   isAdmin: yup.boolean().required("Is Admin is required!"),
+//   emergencyContact: yup.object({
+//     fullName: yup.string()
+//       .required("Fullname is required")
+//       .matches(/^[A-Za-z ]+$/, "Only alphabets and spaces are allowed")
+//       .min(2, "Name must be at least 2 characters")
+//       .max(50, "Name must be at most 50 characters"),
+//     relationship: yup.string()
+//       .required("Relationship is required")
+//       .matches(/^[A-Za-z ]+$/, "Only alphabets and spaces are allowed"),
+//     phoneNumber: yup.string()
+//       .required("Phone Number is required")
+//       .matches(
+//         /^\+?[0-9]{10,15}$/,
+//         "Phone number must contain only digits "
+//       )
+//   })
 
 
 
-})
+
+
+// })
 
 
 const Emp = () => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));  //screen < 600px
   const isSmallMobile = useMediaQuery('(min-width:390px) and (max-width:490px)');
+
+
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const [selectedImage, setSelectedImage] = useState(null);
+  const [imagePreview, setImagePreview] = useState(null);
+  const [isAdmin, setIsAdmin] = useState(false);
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState("");
+  //code for edit 
+  const { id } = useParams();
+  const isEditMode = Boolean(id);
+  const employee = useSelector((store) => store.employee.employees.find((emp) => emp.empId === id));
+  const allEmployees = useSelector((store) => store.employee.employees)
+
+
+  //validation schema
+  const schema = yup.object().shape({
+    fullName: yup.string()
+      .required("Full Name is required!")
+      .matches(/^[A-Za-z ]+$/, "Only alphabets and spaces are allowed.")
+      .min(2, "Full Name must be at least 2 characters.")
+      .max(50, "Full Name must be at most 50 characters."),
+    email: yup.string()
+      .email("Invalid email format")
+      .required("Email is required")
+      .test(
+        "unique-email",
+        "This email is already registered",
+        function (value) {
+          if (!value) return true;
+          const isDuplicate = allEmployees.some((emp) => emp.email.toLowerCase() === value.toLowerCase() && (!isEditMode || emp.empId !== id));
+          return !isDuplicate;
+
+        }
+      ),
+    phoneNumber: yup
+      .string()
+      .required("Phone number is required")
+      .matches(/^\+?[0-9]{10,15}$/, "Phone number must contain only digits ")
+      .test(
+        "unique-phone",
+        "This phone number is already registered",
+        function (value) {
+          if (!value) return true;
+
+          const isDuplicate = allEmployees.some((emp) => emp.phoneNumber === value && (!isEditMode || emp.empId !== id));
+          return !isDuplicate;
+        }
+      ),
+    dateOfBirth: yup
+      .string()
+      .required("Date of birth is required"),
+    skills: yup
+      .string()
+      .required("Skills are required")
+      .test(
+        "valid-skills",
+        "Each skill must contain only letters, numbers, spaces, or + . #",
+        value => {
+          if (!value) return false;
+          const skillsArray = value.split(',').map(skill => skill.trim());
+          const skillRegex = /^[A-Za-z0-9+.# ]+$/;
+
+          return skillsArray.every(skill => skillRegex.test(skill));
+        }
+      ),
+    profilePicture: yup
+      .string()
+      .required("Profile picture is required")
+      .matches(
+        /^data:image\/(png|jpe?g|webp);base64,/i,
+        "Only PNG, JPG, JPEG, or WEBP base64 images are allowed"
+      ),
+
+    empId: yup.
+      string()
+      .required("Employee ID is required")
+      .matches(
+        /^[A-Za-z0-9]+$/,
+        "Only letters and numbers are allowed")
+        .test(
+          "unique-empId",
+          "This Employee ID already taken",
+          function(value){
+            if(!value) return;
+
+            const isDuplicate = allEmployees.some((emp)=> emp.empId === value && (!isEditMode || emp.empId !== id));
+            return !isDuplicate;
+          }
+        ),
+    department: yup.string()
+      .required("Department  is required")
+      .matches(/^[A-Za-z ]+$/, "Only alphabets  are allowed."
+      ),
+    designation: yup.string()
+      .required("Designation is required")
+      .matches(
+        /^[A-Za-z0-9 ]+$/,
+        "Only alphabets, numbers and spaces are allowed."
+      ),
+    joiningDate: yup.string()
+      .required("JoiningDate is required!"),
+    employeeType: yup.string().required("Employee Type is required"),
+    workLocation: yup.string().required("Worklocation  is required"),
+    status: yup.string().required("Status is required"),
+    managerNameOrId: yup.string().required("Manager name or Id is required"),
+    isAdmin: yup.boolean().required("Is Admin is required!"),
+    emergencyContact: yup.object({
+      fullName: yup.string()
+        .required("Fullname is required")
+        .matches(/^[A-Za-z ]+$/, "Only alphabets and spaces are allowed")
+        .min(2, "Name must be at least 2 characters")
+        .max(50, "Name must be at most 50 characters"),
+      relationship: yup.string()
+        .required("Relationship is required")
+        .matches(/^[A-Za-z ]+$/, "Only alphabets and spaces are allowed"),
+      phoneNumber: yup.string()
+        .required("Phone Number is required")
+        .matches(
+          /^\+?[0-9]{10,15}$/,
+          "Phone number must contain only digits "
+        )
+    })
+
+
+
+
+
+  })
 
   const form = useForm({
     defaultValues: {
@@ -146,40 +276,30 @@ const Emp = () => {
   const { errors, isDirty, isValid } = formState
 
 
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
-  const [selectedImage, setSelectedImage] = useState(null);
-  const [imagePreview, setImagePreview] = useState(null);
-  const [isAdmin, setIsAdmin] = useState(false);
-  const [snackbarOpen, setSnackbarOpen] = useState(false);
-  const [snackbarMessage, setSnackbarMessage] = useState("");
-  //code for edit 
-  const { id } = useParams();
-  const isEditMode = Boolean(id);
-  const employee = useSelector((store) => store.employee.employees.find((emp) => emp.empId === id));
+
 
   useEffect(() => {
-    if(!isEditMode){
+    if (!isEditMode) {
       reset({
-        fullName:"",
-        email:"",
-        phoneNumber:"",
-        dateOfBirth:"",
+        fullName: "",
+        email: "",
+        phoneNumber: "",
+        dateOfBirth: "",
         skills: "",
-        profilePicture:"",
-        empId:"",
-        department:"",
-        designation:"",
-        joiningDate:"",
-        employeeType:"",
-        workLocation:"",
-        status:"",
-        managerNameOrId:"",
+        profilePicture: "",
+        empId: "",
+        department: "",
+        designation: "",
+        joiningDate: "",
+        employeeType: "",
+        workLocation: "",
+        status: "",
+        managerNameOrId: "",
         isAdmin: false,
-        emergencyContact:{
-          fullName:"",
-          relationship:"",
-          phoneNumber:""
+        emergencyContact: {
+          fullName: "",
+          relationship: "",
+          phoneNumber: ""
         }
       });
       setImagePreview(null);
@@ -193,7 +313,7 @@ const Emp = () => {
         const formValues = {
           ...employee,
           skills: Array.isArray(employee.skills) ? employee.skills.join(', ') : employee.skills,
-          
+
         }
         console.log(formValues)
         reset(formValues);
@@ -332,12 +452,12 @@ const Emp = () => {
                   <TextField label="Date of Birth" type='date' fullWidth variant="outlined" InputLabelProps={{ shrink: true }} {...register("dateOfBirth")} error={!!errors.dateOfBirth} helperText={errors.dateOfBirth?.message} />
                 </Grid>
                 <Grid size={{ xs: 12, md: 12 }}>
-                  <TextField label="Skills (comma-separated)" placeholder="Javascript, Node.js, React etc" type='text' fullWidth variant='outlined' required {...register("skills")} error={!!errors.skills} helperText={errors.skills?.message} />
+                  <TextField label="Skills (comma-separated)" placeholder="Javascript, Node.js, React etc" type='text' fullWidth variant='outlined'  {...register("skills")} error={!!errors.skills} helperText={errors.skills?.message} />
                 </Grid>
 
                 {/* Image Upload Section */}
                 <Grid size={{ md: 12 }}>
-                  <Typography variant="h6" sx={{fontSize:{xs:"1rem"}}} >Profile Picture</Typography>
+                  <Typography variant="h6" sx={{ fontSize: { xs: "1rem" } }} >Profile Picture</Typography>
                   <Box sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: 2 }}>
                     {/* {imagePreview && (
                       <Avatar
@@ -396,13 +516,13 @@ const Emp = () => {
               <Typography variant='h6' sx={{ fontSize: { xs: "1.5rem", lg: "2rem" } }} mb={2} >  Job Information  </Typography>
               <Grid container spacing={2}>
                 <Grid size={{ xs: 12, sm: 6, md: 6 }}>
-                  <TextField label="Employee ID" type='text' fullWidth required variant="outlined" {...register("empId")} error={!!errors.empId} helperText={errors.empId?.message} />
+                  <TextField label="Employee ID" type='text' fullWidth disabled={isEditMode} variant="outlined" {...register("empId")} error={!!errors.empId} helperText={errors.empId?.message} />
                 </Grid>
                 <Grid size={{ xs: 12, sm: 6, md: 6 }}>
-                  <TextField label="Designation" type='text' fullWidth required variant="outlined"  {...register("designation")} error={!!errors.designation} helperText={errors.designation?.message} />
+                  <TextField label="Designation" type='text' fullWidth variant="outlined"  {...register("designation")} error={!!errors.designation} helperText={errors.designation?.message} />
                 </Grid>
                 <Grid size={{ xs: 12, sm: 6, md: 6 }}>
-                  <TextField label="Department" type='text' fullWidth required variant="outlined" {...register("department")} error={!!errors.department} helperText={errors.department?.message} />
+                  <TextField label="Department" type='text' fullWidth variant="outlined" {...register("department")} error={!!errors.department} helperText={errors.department?.message} />
                 </Grid>
                 <Grid size={{ xs: 12, sm: 6, md: 6 }}>
                   <TextField label="Joining date" type='date' fullWidth variant="outlined" InputLabelProps={{ shrink: true }} {...register("joiningDate")} error={!!errors.joiningDate} helperText={errors.joiningDate?.message} />

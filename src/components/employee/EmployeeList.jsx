@@ -23,6 +23,7 @@ import GppGoodOutlinedIcon from '@mui/icons-material/GppGoodOutlined';
 import GppBadOutlinedIcon from '@mui/icons-material/GppBadOutlined';
 import { useMediaQuery, useTheme } from '@mui/material';
 import { useConfirmDialog } from '../context/ConfirmDialogContext';
+import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 const EmployeeList = () => {
 
   const theme = useTheme();
@@ -38,6 +39,8 @@ const EmployeeList = () => {
 
   const [page, setPage] = useState(0); // MUI TablePagination is 0-indexed
   const [rowsPerPage, setRowsPerPage] = useState(5);
+
+  
 
 
   const filteredEmployees = employees.filter((emp) =>
@@ -151,19 +154,19 @@ const EmployeeList = () => {
   if (employees.length === 0) {
     return <Box sx={{ display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", gap: 2, mt: 3 }}>
       <Typography variant='h6' >No employees found</Typography>
-      <Typography variant='body1' mt={1} sx={{ opacity: 0.6, p:2 }}>  Overview of your employee management system </Typography>
+      <Typography variant='body1' mt={1} sx={{ opacity: 0.6, p: 2 }}>  Overview of your employee management system </Typography>
       <Button variant='contained' onClick={handleClick}>Add First Employee</Button>
     </Box>
   }
   return (
     <Box sx={{ p: { xs: 1, sm: 2, md: 3 } }}>
-      <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: {md:1, lg:2} }}>
+      <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: { md: 1, lg: 2 } }}>
         <Box>
-          <Typography variant='h4' sx={{ display: { xs: "none", sm: "none", md: "block" } }} fontWeight={600}>Employees</Typography>
+          <Typography variant='h4' sx={{ display: { xs: "none", sm: "none", md: "block" } }} >Employees</Typography>
           <Typography variant='body1' mt={1} sx={{ opacity: 0.6, display: { xs: "none", sm: "none", md: "block" } }} >Manage your organization's employees</Typography>
         </Box>
 
-        <Stack direction={{ xs: 'row', }} spacing={1} alignItems="flex-end" sx={{mr:{md:4, lg:0}}}>
+        <Stack direction={{ xs: 'row', }} spacing={1} alignItems="flex-end" sx={{ mr: { md: 4, lg: 0 } }}>
           <Button
             onClick={handleExportToExcel}
             variant="outlined"
@@ -179,14 +182,14 @@ const EmployeeList = () => {
         </Stack>
       </Box>
 
-      <Box sx={{ p: 2, boxShadow: "rgba(0, 0, 0, 0.16) 0px 1px 4px", mt: 2 }}>
+      <Box sx={{ p: 2, mt: 2 }}>
         <Stack
           direction={{ xs: 'column', sm: 'row' }}
           justifyContent="space-between"
           alignItems={{ xs: 'stretch', sm: 'center' }}
           spacing={2}
         >
-          <Typography variant='h6' fontWeight={600} sx={{ display: { sx: "none", sm: "block" } }} fontSize={{ xs: '1.5rem', xl: '2rem' }}>Employees Directory</Typography>
+          <Typography variant='h6'  sx={{ display: { sx: "none", sm: "block" } }} fontSize={{ xs: '1.5rem', xl: '2rem' }}>Employees Directory</Typography>
 
           <TextField
             placeholder="Search employees"
@@ -194,7 +197,7 @@ const EmployeeList = () => {
             size="small"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            sx={{ width: { xs: '80%', sm: 300 }, pr:{md: 4, lg: 0} }}
+            sx={{ width: { xs: '80%', sm: 300 }, pr: { md: 4, lg: 0 } }}
             InputProps={{
               startAdornment: (
                 <InputAdornment position="start">
@@ -211,27 +214,27 @@ const EmployeeList = () => {
           <Table>
             <TableHead>
               <TableRow>
-                <TableCell align='center' sx={{fontSize:{xs:'1rem', xl:'1.25rem'}}}><strong>Sl no</strong></TableCell>
-                <TableCell align='center' sx={{fontSize:{xs:'1rem', xl:'1.25rem'}}}><strong>Fullname</strong></TableCell>
-                <TableCell align='center' sx={{ display: { xs: "none",sm: "none" ,lg: "table-cell" }, fontSize:{xs:'1rem', xl:'1.25rem'} }}><strong>Profile photo</strong></TableCell>
-                {!isSmallMobile && <TableCell align='center' sx={{fontSize:{xs:'1rem', xl:'1.25rem'}}} ><strong>Emp phone</strong></TableCell>}
-                <TableCell align='center' sx={{ display: { xs: "none", sm: "none",md:"table-cell" }, fontSize:{xs:'1rem', xl:'1.25rem'} }}><strong>Emp Id</strong></TableCell>
-                <TableCell align='center' sx={{ display: { xs: "none", sm: "none", md: "table-cell"}, fontSize:{xs:'1rem', xl:'1.25rem'}  }}><strong>Designation</strong></TableCell>
-                <TableCell align='center' sx={{ display: { xs: "none", sm: "none", lg: "table-cell" }, fontSize:{xs:'1rem', xl:'1.5rem'} }}><strong>Department</strong></TableCell>
-                <TableCell align='center' sx={{ display: { xs: "none", sm: "table-cell" }, fontSize:{xs:'1rem', xl:'1.25rem'} }}><strong>Status</strong></TableCell>
-                <TableCell align='center' sx={{ display: { xs: "none", sm: "none", md: "table-cell" }, fontSize:{xs:'1rem', xl:'1.25rem'} }}><strong>isAdmin</strong></TableCell>
-                <TableCell align='center' sx={{fontSize:{xs:'1rem', xl:'1.25rem'}}}><strong>Actions</strong></TableCell>
+                <TableCell align='center' sx={{ fontSize: { xs: '1rem', xl: '1.15rem' } }}><strong>Sl no</strong></TableCell>
+                <TableCell align='center' sx={{ fontSize: { xs: '1rem', xl: '1.15rem' } }}><strong>Fullname</strong></TableCell>
+                <TableCell align='center' sx={{ display: { xs: "none", sm: "none", lg: "table-cell" }, fontSize: { xs: '1rem', xl: '1.15rem' } }}><strong>Profile photo</strong></TableCell>
+                {!isSmallMobile && <TableCell align='center' sx={{ fontSize: { xs: '1rem', xl: '1.15rem' } }} ><strong>Emp phone</strong></TableCell>}
+                <TableCell align='center' sx={{ display: { xs: "none", sm: "none", md: "table-cell" }, fontSize: { xs: '1rem', xl: '1.15rem' } }}><strong>Emp Id</strong></TableCell>
+                <TableCell align='center' sx={{ display: { xs: "none", sm: "none", md: "table-cell" }, fontSize: { xs: '1rem', xl: '1.15rem' } }}><strong>Designation</strong></TableCell>
+                <TableCell align='center' sx={{ display: { xs: "none", sm: "none", lg: "table-cell" }, fontSize: { xs: '1rem', xl: '1.15rem' } }}><strong>Department</strong></TableCell>
+                <TableCell align='center' sx={{ display: { xs: "none", sm: "table-cell" }, fontSize: { xs: '1rem', xl: '1.15rem' } }}><strong>Status</strong></TableCell>
+                <TableCell align='center' sx={{ display: { xs: "none", sm: "none", md: "table-cell" }, fontSize: { xs: '1rem', xl: '1.15rem' } }}><strong>isAdmin</strong></TableCell>
+                <TableCell align='center' sx={{ fontSize: { xs: '1rem', xl: '1.15rem' } }}><strong>Actions</strong></TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
-              {
-                paginatedEmployees.map((emp, idx) => (
+              {filteredEmployees.length === 0 && searchQuery.length > 0 ? (<TableCell colSpan={10} align='center'>No employee found</TableCell> ):
+                (paginatedEmployees.map((emp, idx) => (
                   <TableRow key={emp.empId}>
                     <TableCell align='center'>{page * rowsPerPage + idx + 1}</TableCell>
                     <TableCell align='center'>{emp.fullName}</TableCell>
 
 
-                    <TableCell align="center" sx={{ display: { xs: "none", sm:"none", lg: "table-cell", fontSize:{xs:'1rem', md:'1.5rem'} } }}>
+                    <TableCell align="center" sx={{ display: { xs: "none", sm: "none", lg: "table-cell", fontSize: { xs: '1rem', md: '1.5rem' } } }}>
                       <Box display="flex" justifyContent="center">
                         <Avatar
                           src={emp.profilePicture}
@@ -242,15 +245,15 @@ const EmployeeList = () => {
                     </TableCell>
 
                     {!isSmallMobile && <TableCell align='center' >{emp.phoneNumber}</TableCell>}
-                    <TableCell align='center' sx={{ display: { xs: "none",sm:"none", md: "table-cell", fontSize:{xs:'1rem', md:'1.5rem'} } }}>{emp.empId}</TableCell>
-                    <TableCell align='center' sx={{ display: { xs: "none", sm: "none", md: "table-cell", fontSize:{xs:'1rem', md:'1.5rem'} } }}>{emp.designation}</TableCell>
-                    <TableCell align='center' sx={{ display: { xs: "none", sm: "none", lg: "table-cell", fontSize:{xs:'1rem', md:'1.5rem'} } }}>{emp.department}</TableCell>
-                    <TableCell align='center' sx={{ display: { xs: "none", sm: "table-cell", fontSize:{xs:'1rem', md:'1.5rem'} } }}>
-                      <Chip label={emp.status}  color={emp.status === "Active" ? "success" : emp.status === "On Leave" ? "error" : "default"} variant="outlined"
+                    <TableCell align='center' sx={{ display: { xs: "none", sm: "none", md: "table-cell", fontSize: { xs: '1rem', md: '1.5rem' } } }}>{emp.empId}</TableCell>
+                    <TableCell align='center' sx={{ display: { xs: "none", sm: "none", md: "table-cell", fontSize: { xs: '1rem', md: '1.5rem' } } }}>{emp.designation}</TableCell>
+                    <TableCell align='center' sx={{ display: { xs: "none", sm: "none", lg: "table-cell", fontSize: { xs: '1rem', md: '1.5rem' } } }}>{emp.department}</TableCell>
+                    <TableCell align='center' sx={{ display: { xs: "none", sm: "table-cell", fontSize: { xs: '1rem', md: '1.5rem' } } }}>
+                      <Chip label={emp.status} color={emp.status === "Active" ? "success" : emp.status === "On Leave" ? "error" : "default"} variant="outlined"
                       />
                     </TableCell>
-                    <TableCell align='center' sx={{ display: { xs: "none", sm: "none", md: "table-cell", fontSize:{xs:"small", lg:"medium"},  } }}>
-                      {emp.isAdmin === true ? <GppGoodOutlinedIcon color='success' fontSize='large' /> : <GppBadOutlinedIcon color='error' fontSize='large' />}
+                    <TableCell align='center' sx={{ display: { xs: "none", sm: "none", md: "table-cell",  } }}>
+                      {emp.isAdmin === true ? <GppGoodOutlinedIcon  color='success' /> : <GppBadOutlinedIcon color='error' fontSize='large' />}
                     </TableCell>
                     <TableCell align='center'>
                       <Box sx={{
@@ -260,18 +263,18 @@ const EmployeeList = () => {
                         gap: 1
                       }}>
                         <Tooltip title="edit details" >
-                          <EditIcon color='primary' sx={{ cursor: "pointer",  }}  onClick={() => handleEdit(emp.empId)} />
+                          <EditIcon color='primary' sx={{ cursor: "pointer", }} onClick={() => handleEdit(emp.empId)} />
                         </Tooltip>
                         <Tooltip title="generate ID card">
-                          <CreditCardOutlinedIcon color='primary' sx={{ cursor: "pointer",  }}  onClick={() => generatePDF(emp)} />
+                          <CreditCardOutlinedIcon color='primary' sx={{ cursor: "pointer", }} onClick={() => generatePDF(emp)} />
                         </Tooltip>
                         <Tooltip title="view details">
-                          <ArrowRightAltIcon color='primary' sx={{ cursor: "pointer" }}   onClick={() => navigate(`/employee-details/${emp.empId}`)} />
+                          <InfoOutlinedIcon color='primary' sx={{ cursor: "pointer" }} onClick={() => navigate(`/employee-details/${emp.empId}`)} />
                         </Tooltip>
                       </Box>
                     </TableCell>
                   </TableRow>
-                ))
+                )))
               }
             </TableBody>
           </Table>
@@ -284,7 +287,7 @@ const EmployeeList = () => {
           rowsPerPage={rowsPerPage}
           onRowsPerPageChange={handleChangeRowsPerPage}
           rowsPerPageOptions={[5, 10, 25, 50]}
-          sx={{width:{xs:"100%"}}}
+          sx={{ width: { xs: "100%" } }}
         />
 
 

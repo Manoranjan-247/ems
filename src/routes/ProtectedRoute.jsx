@@ -15,8 +15,9 @@
 import React from "react";
 
 import { Navigate } from "react-router-dom";
-
+import EmployeeListShimmer from "../components/employee/EmployeeListShimmer";
 import { useAuth } from "../components/context/AuthContext";
+import { Box } from "@mui/material";
 
 const ProtectedRoute = ({ children }) => {
 
@@ -24,7 +25,7 @@ const ProtectedRoute = ({ children }) => {
 
     if (loading) {
 
-        return <div>Loading...</div>; // ya spinner
+        return <Box display="flex" justifyContent="center" alignItems="center">Loading</Box> 
 
     }
 

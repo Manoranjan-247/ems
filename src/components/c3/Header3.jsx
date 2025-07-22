@@ -25,7 +25,7 @@ const Header3 = () => {
 
             <Box sx={{ display: "flex", alignItems: "center", gap: 4 }} >
                 <MenuIcon sx={{ cursor: 'pointer', display: { xs: "none", sm: "none", md: "none", lg: "none", xl:"block" } }} onClick={toggleSidebar} />
-                <Typography variant='h5' color='primary'>{isMobile ? "EMS" : "Employee Management System"}</Typography>
+                <Typography variant='h5' color='primary' fontWeight={600}>{isMobile ? "EMS" : "Employee Management System"}</Typography>
             </Box>
             <Box sx={{ display: "flex", alignItems: "center", gap: 4 }}>
                 {/* <Typography variant='h5'>Admin</Typography> */}

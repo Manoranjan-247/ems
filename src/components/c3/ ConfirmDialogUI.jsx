@@ -16,7 +16,7 @@ const ConfirmDialogUI = ({ open, message, onConfirm, onCancel }) => {
       <DialogTitle id="confirm-dialog">Are you sure ?</DialogTitle>
       <DialogContent>{message}</DialogContent>
       <DialogActions>
-        <Button onClick={onCancel}>Cancel</Button>
+        <Button onClick={onCancel} color='error' variant='contained'>No</Button>
         <Button onClick={onConfirm} variant="contained" color="primary">
           Yes
         </Button>

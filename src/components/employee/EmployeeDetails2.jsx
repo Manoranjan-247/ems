@@ -19,7 +19,7 @@ import { useMediaQuery, useTheme } from '@mui/material';
 const EmployeeDetails2 = () => {
     const theme = useTheme();
     const isMobile = useMediaQuery(theme.breakpoints.down('sm'));  //screen < 600px
-    const isSmallMobile = useMediaQuery('(min-width:390px) and (max-width:490px)');
+    const isSmallMobile = useMediaQuery('(min-width:375px) and (max-width:490px)');
 
     const { id } = useParams();
     const employee = useSelector((store) => store.employee.employees.find((emp) => emp.empId === id));
@@ -66,7 +66,7 @@ const EmployeeDetails2 = () => {
                                     alignItems: "center",
                                     flexDirection: isSmallMobile ? "column" : "row",
                                 }}>
-                                    <Typography variant='h4' fontWeight={600}>{employee.fullName}</Typography>
+                                    <Typography variant='h6' sx={{fontSize:{xs:"1.5rem", md:"1.8rem", lg:"2rem"}}} fontWeight={600}>{employee.fullName}</Typography>
                                     <Box sx={{ display: "flex", gap: 1 }}>
                                         <Chip label={employee.status} variant='filled' color={employee.status === "On Leave" ? 'error' : 'success'} />
                                         {employee.isAdmin && <Chip label='Admin' variant='outlined' color='primary' />}
@@ -74,7 +74,7 @@ const EmployeeDetails2 = () => {
                                 </Box>
                                 <Box sx={{ display: "flex", flexDirection: isSmallMobile ? "column" : "row", gap: 1, justifyContent: isSmallMobile ? "center" : "flex-start", alignItems: isSmallMobile ? "center" : "flex-start" }}>
                                     <Typography variant='h6' sx={{ opacity: 0.6 }}>{employee.designation}  </Typography>
-                                    <Typography variant='h6' sx={{ opacity: 0.6 }}>{employee.department}</Typography>
+                                    <Typography variant='h6' sx={{ opacity: 0.6 }}>{!isSmallMobile && " • " }{employee.department}</Typography>
 
                                 </Box>
                                 <Box sx={{ display: "flex", flexDirection: isSmallMobile ? "column" : "row" }}>
@@ -119,7 +119,7 @@ const EmployeeDetails2 = () => {
                             <Grid size={{ xs: 12, sm: 6, md: 6 }}  >
                                 <Box  >
                                     <Typography variant='body1' sx={{ opacity: 0.6 }}>Email</Typography>
-                                    <Box sx={{ opacity: 0.8, display: "flex", alignItems: "center", gap: 1 }}>
+                                    <Box sx={{  display: "flex", alignItems: "center", gap: 1 }}>
                                         <EmailOutlinedIcon fontSize='small' />
                                         <Typography variant='h6'  >{employee.email}</Typography>
                                     </Box>
@@ -128,7 +128,7 @@ const EmployeeDetails2 = () => {
                             <Grid size={{ xs: 12, sm: 6, md: 6 }}>
                                 <Box >
                                     <Typography variant='body1' sx={{ opacity: 0.6 }}>Phonenumber</Typography>
-                                    <Box sx={{ opacity: 0.7, display: "flex", alignItems: "center", gap: 1 }}>
+                                    <Box sx={{  display: "flex", alignItems: "center", gap: 1 }}>
                                         <LocalPhoneOutlinedIcon fontSize='small' />
                                         <Typography variant='h6'  >{employee.phoneNumber}</Typography>
                                     </Box>
@@ -137,7 +137,7 @@ const EmployeeDetails2 = () => {
                             <Grid size={{ xs: 12, sm: 6, md: 6 }}>
                                 <Box >
                                     <Typography variant='body1' sx={{ opacity: 0.6 }}>Date of Birth</Typography>
-                                    <Box sx={{ opacity: 0.7, display: "flex", alignItems: "center", gap: 1 }}>
+                                    <Box sx={{  display: "flex", alignItems: "center", gap: 1 }}>
                                         <CalendarMonthOutlinedIcon fontSize='small' />
                                         <Typography variant='h6'  >{employee.dateOfBirth}</Typography>
                                     </Box>
@@ -146,7 +146,7 @@ const EmployeeDetails2 = () => {
                             <Grid size={{ xs: 12, sm: 6, md: 6 }}>
                                 <Box >
                                     <Typography variant='body1' sx={{ opacity: 0.6 }}>Work Location</Typography>
-                                    <Box sx={{ opacity: 0.7, display: "flex", alignItems: "center", gap: 1 }}>
+                                    <Box sx={{  display: "flex", alignItems: "center", gap: 1 }}>
                                         <LocationOnOutlinedIcon fontSize='small' />
                                         <Typography variant='h6'  >{employee.workLocation}</Typography>
                                     </Box>
@@ -155,7 +155,7 @@ const EmployeeDetails2 = () => {
                             <Grid size={{ xs: 12, sm: 6, md: 6 }}>
                                 <Box >
                                     <Typography variant='body1' sx={{ opacity: 0.6 }}>Employee Type</Typography>
-                                    <Box sx={{ opacity: 0.7, display: "flex", alignItems: "center", gap: 1 }}>
+                                    <Box sx={{  display: "flex", alignItems: "center", gap: 1 }}>
                                         <AccessTimeIcon fontSize='small' />
                                         <Typography variant='h6'  >{employee.employeeType}</Typography>
                                     </Box>
@@ -164,7 +164,7 @@ const EmployeeDetails2 = () => {
                             <Grid size={{ xs: 12, sm: 6, md: 6 }}>
                                 <Box >
                                     <Typography variant='body1' sx={{ opacity: 0.6 }}>Manager name or ID</Typography>
-                                    <Box sx={{ opacity: 0.7, display: "flex", alignItems: "center", gap: 1 }}>
+                                    <Box sx={{  display: "flex", alignItems: "center", gap: 1 }}>
                                         <ManageAccountsIcon fontSize='small' />
                                         <Typography variant='h6'  >{employee.managerNameOrId}</Typography>
                                     </Box>
@@ -173,7 +173,7 @@ const EmployeeDetails2 = () => {
                             <Grid size={{ xs: 12, sm: 6, md: 6 }}>
                                 <Box >
                                     <Typography variant='body1' sx={{ opacity: 0.6 }}>Department</Typography>
-                                    <Box sx={{ opacity: 0.7, display: "flex", alignItems: "center", gap: 1 }}>
+                                    <Box sx={{  display: "flex", alignItems: "center", gap: 1 }}>
                                         <CorporateFareIcon fontSize='small' />
                                         <Typography variant='h6'  >{employee.department}</Typography>
                                     </Box>
@@ -182,7 +182,7 @@ const EmployeeDetails2 = () => {
                             <Grid size={{ xs: 12, sm: 6, md: 6 }}>
                                 <Box >
                                     <Typography variant='body1' sx={{ opacity: 0.6 }}>Designation</Typography>
-                                    <Box sx={{ opacity: 0.7, display: "flex", alignItems: "center", gap: 1 }}>
+                                    <Box sx={{  display: "flex", alignItems: "center", gap: 1 }}>
                                         <AccountBoxIcon fontSize='small' />
                                         <Typography variant='h6'  >{employee.designation}</Typography>
                                     </Box>
@@ -228,7 +228,7 @@ const EmployeeDetails2 = () => {
 
                         <Box >
                             {
-                                employee.skills.map((skill) => (<Chip variant='contained' color='success' sx={{ mr: 2, mb: 2 }} label={skill} />))
+                                employee.skills.map((skill, i) => (<Chip  key={i} variant='contained' color='success' sx={{ mr: 2, mb: 2 }} label={skill} />))
                             }
                         </Box>
                     </Grid>

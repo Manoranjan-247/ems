@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { NavLink, useLocation } from 'react-router-dom';
+import { NavLink, useLocation, useNavigate } from 'react-router-dom';
 import { Drawer, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Divider, Toolbar, Typography, Box } from '@mui/material';
 import { Users, UserPlus, Home, Settings } from 'lucide-react';
 import { useLayoutContext } from '../context/LayoutContext';
@@ -19,7 +19,7 @@ const Sidebar3 = () => {
   const { sidebarOpen, setSidebarOpen } = useLayoutContext();
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('lg'));
-
+  const navigate = useNavigate();
   useEffect(() => {
     if (isMobile && sidebarOpen) {
       setSidebarOpen(false);
@@ -66,9 +66,11 @@ const Sidebar3 = () => {
               display: 'flex',
               justifyContent: 'center',
               alignItems: 'center',
+              cursor:"pointer"
             }}
+            
           >
-            <Users size={16} color="#fff" />
+            <Users onClick={()=> navigate('/employees')} size={16} color="#fff" />
           </Box>
           {sidebarOpen && (
             <Typography variant="h6" sx={{ fontWeight: 'bold' }}>
