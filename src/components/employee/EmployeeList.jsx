@@ -1,5 +1,5 @@
 import { Avatar, Box, Button, Chip, InputAdornment, Stack, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField, Tooltip, Typography } from '@mui/material'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import FileDownloadOutlinedIcon from '@mui/icons-material/FileDownloadOutlined';
 import AddOutlinedIcon from '@mui/icons-material/AddOutlined';
 import { useNavigate } from 'react-router-dom';
@@ -64,6 +64,10 @@ const EmployeeList = () => {
     page * rowsPerPage,
     page * rowsPerPage + rowsPerPage
   );
+
+  useEffect(()=>{
+    setPage(0);
+  },[searchQuery])
 
 
 
@@ -191,12 +195,13 @@ const EmployeeList = () => {
         </Stack>
       </Box>
 
-      <Box sx={{ p: 2, mt: 2 }}>
+      <Box sx={{ p: 2, mt: 2,  }}>
         <Stack
           direction={{ xs: 'column', sm: 'row' }}
           justifyContent="space-between"
           alignItems={{ xs: 'stretch', sm: 'center' }}
           spacing={2}
+          mb={2}
         >
           <Typography variant='h6' sx={{ display: { sx: "none", sm: "block" } }} fontSize={{ xs: '1.5rem', xl: '2rem' }}>Employees Directory</Typography>
 
@@ -231,7 +236,8 @@ const EmployeeList = () => {
                 <TableCell align='center' sx={{ display: { xs: "none", sm: "none", md: "table-cell" }, fontSize: { xs: '1rem', xl: '1.15rem' } }}><strong>Designation</strong></TableCell>
                 <TableCell align='center' sx={{ display: { xs: "none", sm: "none", lg: "table-cell" }, fontSize: { xs: '1rem', xl: '1.15rem' } }}><strong>Department</strong></TableCell>
                 <TableCell align='center' sx={{ display: { xs: "none", sm: "table-cell" }, fontSize: { xs: '1rem', xl: '1.15rem' } }}><strong>Status</strong></TableCell>
-                <TableCell align='center' sx={{ display: { xs: "none", sm: "none", md: "table-cell" }, fontSize: { xs: '1rem', xl: '1.15rem' } }}><strong>isAdmin</strong></TableCell>
+                {/* <TableCell align='center' sx={{ display: { xs: "none", sm: "none", md: "table-cell" }, fontSize: { xs: '1rem', xl: '1.15rem' } }}><strong>isAdmin</strong></TableCell> */}
+                <TableCell align='center' sx={{ display: { xs: "none", sm: "none", md: "none" }, '@media(min-width: 961px)':{display:"table-cell"}  , fontSize: { xs: '1rem', xl: '1.15rem' } }}><strong>isAdmin</strong></TableCell>
                 <TableCell align='center' sx={{ fontSize: { xs: '1rem', xl: '1.15rem' } }}><strong>Actions</strong></TableCell>
               </TableRow>
             </TableHead>
@@ -261,8 +267,8 @@ const EmployeeList = () => {
                       <Chip label={emp.status} color={emp.status === "Active" ? "success" : emp.status === "On Leave" ? "error" : "default"} variant="outlined"
                       />
                     </TableCell>
-                    <TableCell align='center' sx={{ display: { xs: "none", sm: "none", md: "table-cell", } }}>
-                      {emp.isAdmin === true ? <GppGoodOutlinedIcon color='success' /> : <GppBadOutlinedIcon color='error' fontSize='large' />}
+                    <TableCell align='center' sx={{ display: { xs: "none", sm: "none", md: "none", '@media(min-width: 961px)':{display:"table-cell"} } }}>
+                      {emp.isAdmin === true ? <GppGoodOutlinedIcon color='success' /> : <GppBadOutlinedIcon color='error'  />}
                     </TableCell>
                     <TableCell align='center'>
                       <Box sx={{

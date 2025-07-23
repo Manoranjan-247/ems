@@ -10,11 +10,11 @@ const ConfirmDialogUI = ({ open, message, onConfirm, onCancel }) => {
   return (
     <Dialog
       open={open}
-      onClose={onCancel}         // ✅ ESC key or backdrop click
+      onClose={onCancel}         
       aria-labelledby="confirm-dialog"
-      
+
     >
-      <DialogTitle id="confirm-dialog">Are you sure ?</DialogTitle>
+      <DialogTitle id="confirm-dialog" color='warning'>Are you sure ?</DialogTitle>
       <DialogContent>{message}</DialogContent>
       <DialogActions>
         <Button onClick={onCancel} color='error' variant='contained'>No</Button>
@@ -23,6 +23,8 @@ const ConfirmDialogUI = ({ open, message, onConfirm, onCancel }) => {
         </Button>
       </DialogActions>
     </Dialog>
+    
+
   );
 };
 

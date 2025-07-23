@@ -18,13 +18,13 @@ const navigation = [
 const Sidebar3 = () => {
   const { sidebarOpen, setSidebarOpen } = useLayoutContext();
   const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down('lg'));
+  const isSidebarAvailable = useMediaQuery(theme.breakpoints.down('xl'));
   const navigate = useNavigate();
   useEffect(() => {
-    if (isMobile && sidebarOpen) {
+    if (isSidebarAvailable && sidebarOpen) {
       setSidebarOpen(false);
     }
-  }, [isMobile]); // runs when screen size changes
+  }, [isSidebarAvailable]); 
 
 
   const location = useLocation();
@@ -70,7 +70,7 @@ const Sidebar3 = () => {
             }}
             
           >
-            <Users onClick={()=> navigate('/employees')} size={16} color="#fff" />
+            <Users onClick={()=> navigate('/employees')} size={16} color='#fff' />
           </Box>
           {sidebarOpen && (
             <Typography variant="h6" sx={{ fontWeight: 'bold' }}>

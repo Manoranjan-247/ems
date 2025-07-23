@@ -130,6 +130,8 @@ const Emp = () => {
   const employee = useSelector((store) => store.employee.employees.find((emp) => emp.empId === id));
   const allEmployees = useSelector((store) => store.employee.employees)
 
+  
+
 
   //validation schema
   const schema = yup.object().shape({
@@ -176,7 +178,7 @@ const Emp = () => {
         "Each skill must contain only letters, numbers, spaces, or + . #",
         function (value) {
           if (!value) return true;
-          const skillArray = value.split(',').map((skill) => skill.trim()).filter((skill) => skill !== "");
+          const skillArray = value.split(', ').map((skill) => skill.trim()).filter((skill) => skill !== "");
           const skillRegex = /^[A-Za-z0-9+.# ]+$/;
 
           return skillArray.every(skill => skillRegex.test(skill));
@@ -187,7 +189,7 @@ const Emp = () => {
         "Maximum 10 skills are allowed",
         function (value) {
           if (!value) return true;
-          const skillArray = value.split(',').map((skill) => skill.trim()).filter((skill) => skill !== "");
+          const skillArray = value.split(', ').map((skill) => skill.trim()).filter((skill) => skill !== "");
           return skillArray.length <= 10;
         }
       )
@@ -196,7 +198,7 @@ const Emp = () => {
         "Duplicate skills are not allowed",
         function(value){
           if(!value) return true;
-          const skillArray = value.split(',').map((skill) => skill.trim()).filter((skill) => skill !== "");
+          const skillArray = value.split(', ').map((skill) => skill.trim()).filter((skill) => skill !== "");
           const uniqueSkills = [...new Set(skillArray)];
           return skillArray.length === uniqueSkills.length;
         }
@@ -331,8 +333,8 @@ const Emp = () => {
     }
     if (isEditMode) {
       if (employee) {
-        console.log(employee.status);
-        console.log(employee.employeeType);
+        // console.log(employee.status);
+        // console.log(employee.employeeType);
         const formValues = {
           ...employee,
           skills: Array.isArray(employee.skills) ? employee.skills.join(', ') : employee.skills,
@@ -407,9 +409,19 @@ const Emp = () => {
     setSnackbarOpen(false);
   }
 
+  //check if id exist
+  const isIdExist = Boolean(employee);
+
   // Watch the values to get current form state
   const watchedEmployeeType = watch("employeeType");
   const watchedStatus = watch("status");
+
+  if(isEditMode && !isIdExist){
+    return (<Box sx={{display:"flex",flexDirection:"column", justifyContent:"center", alignItems:"center", minHeight:"80vh", gap:"2"}}>
+      <Typography variant='h6' color='error' sx={{fontSize:{xs:"1rem", md:"2rem"}}}>Invalid Employee ID</Typography>
+      <Button variant='contained' onClick={()=> navigate('/employees')}>Go Back</Button>
+    </Box>)
+  }
 
   return (
     <Box p={2}>
@@ -433,9 +445,9 @@ const Emp = () => {
           Back to Employees
         </Button>
         <Box>
-          {!isSmallMobile && <Typography variant='h4' fontWeight={600}>Add New Employee</Typography>}
+          {!isSmallMobile && <Typography variant='h4' fontWeight={600}>{isEditMode ? "Update employee" :"Add New Employee"}</Typography>}
           <Typography variant='body1' mt={1} sx={{ opacity: isSmallMobile ? 1 : 0.7 }}>
-            Fill in the details to add a new employee
+            {isEditMode ? "Change the details and update employee" :"Fill in the details to add a new employee"}
           </Typography>
         </Box>
       </Box>
@@ -540,14 +552,14 @@ const Emp = () => {
                   <TextField label="Employee Type" select fullWidth variant="outlined" value={watchedEmployeeType || ""}   {...register("employeeType")} error={!!errors.employeeType} helperText={errors.employeeType?.message}>
                     <MenuItem value="">Select Employee Type</MenuItem>
                     <MenuItem value="Full Time">Full Time</MenuItem>
-                    <MenuItem value="Part Time">Part Time</MenuItem>
+                    {/* <MenuItem value="Part Time">Part Time</MenuItem> */}
                     <MenuItem value="Intern">Intern</MenuItem>
                   </TextField>
                 </Grid>
                 <Grid size={{ xs: 12, sm: 6, md: 6 }}>
                   <TextField label="Work Location" type='text' fullWidth variant="outlined" {...register("workLocation")} error={!!errors.workLocation} helperText={errors.workLocation?.message} />
                 </Grid>
-                <Grid item size={{ xs: 12, sm: 6, md: 6 }} >
+                <Grid  size={{ xs: 12, sm: 6, md: 6 }} >
                   <TextField label="Status" select fullWidth variant="outlined" value={watchedStatus || ""}   {...register("status")} error={!!errors.status} helperText={errors.status?.message}>
                     <MenuItem value="">Select Status</MenuItem>
                     <MenuItem value="Active">Active</MenuItem>
@@ -558,7 +570,7 @@ const Emp = () => {
                 <Grid size={{ xs: 12, sm: 6, md: 6 }}>
                   <TextField label="Manager name or ID" type='text' fullWidth variant="outlined" {...register("managerNameOrId")} error={!!errors.managerNameOrId} helperText={errors.managerNameOrId?.message} />
                 </Grid>
-                <Grid item size={{ xs: 12, md: 6 }}>
+                <Grid  size={{ xs: 12, md: 6 }}>
                   <FormControlLabel
                     control={
                       <Checkbox
@@ -617,7 +629,7 @@ const Emp = () => {
                 }}>
                   Cancel
                 </Button>
-                <Button variant="contained" color="success" type='submit' sx={{
+                <Button disabled={!isDirty} variant="contained" color="success" type='submit' sx={{
                   px: { xs: 1, sm: 2 },
                   py: { xs: 0.5, sm: 1 },
                   fontSize: { xs: '0.7rem', sm: '0.875rem' },
