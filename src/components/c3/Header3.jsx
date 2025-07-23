@@ -1,7 +1,6 @@
 
 import React, { useState } from 'react'
 import MenuIcon from '@mui/icons-material/Menu';
-import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import { useLayoutContext } from '../context/LayoutContext';
 import { useAuth } from '../context/AuthContext';
 import {
@@ -15,17 +14,20 @@ import {
 import { Box } from '@mui/material';
 import { useMediaQuery, useTheme } from '@mui/material';
 import { useConfirmDialog } from '../context/ConfirmDialogContext';
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import LogoutIcon from '@mui/icons-material/Logout';
+import SettingsIcon from '@mui/icons-material/Settings';
 const Header3 = () => {
     const theme = useTheme();
-    const isMobile = useMediaQuery(theme.breakpoints.down('md'));  
+    const isMobile = useMediaQuery(theme.breakpoints.down('md'));
     const { sidebarOpen, toggleSidebar } = useLayoutContext();
     const { logout } = useAuth()
     return (
         <Box sx={{ display: "flex", alignItems: "center", justifyContent: "space-between", px: 4, py: 0.8, borderBottom: '1px solid #e0e0e0', }}>
 
             <Box sx={{ display: "flex", alignItems: "center", gap: 4 }} >
-                <MenuIcon sx={{ cursor: 'pointer', display: { xs: "none", sm: "none", md: "none", lg: "none", xl:"block" } }} onClick={toggleSidebar} />
-                <Typography variant='h5' color='primary' fontWeight={600}>{isMobile ? "EMS" : "Employee Management System"}</Typography>
+                <MenuIcon sx={{ cursor: 'pointer', display: { xs: "none", sm: "none", md: "none", lg: "none", xl: "block" }, fontSize: "24px" }} onClick={toggleSidebar} />
+                <Typography variant='h5' color='primary.dark' fontWeight={600}>{isMobile ? "EMS" : "Employee Management System"}</Typography>
             </Box>
             <Box sx={{ display: "flex", alignItems: "center", gap: 4 }}>
                 {/* <Typography variant='h5'>Admin</Typography> */}
@@ -65,7 +67,7 @@ function ProfileDropdown({ logout, useConfirmDialog }) {
             <Tooltip title="profile">
                 <IconButton onClick={handleClick} size="small"  >
                     <Avatar
-                        sx={{ width: 40, height: 40 , mr:{xs: 0, md:3,lg: 0 }, }}
+                        sx={{ width: 40, height: 40, mr: { xs: 0, md: 0, lg: 0 }, }}
                         src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT1oyt9166XWnxUIF4AgPIJSA2AfNh1ebiRig&s"
                         alt="Profile"
                     />
@@ -100,13 +102,16 @@ function ProfileDropdown({ logout, useConfirmDialog }) {
                 transformOrigin={{ horizontal: 'right', vertical: 'top' }}
                 anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
             >
-                <MenuItem onClick={() => alert('Only for Demo')}>
+                <MenuItem sx={{display:"flex", justifyContent:"flex-start", gap:1}} onClick={() => alert('Only for Demo')}>
+                    <AccountCircleIcon fontSize='18px' color='gray' />
                     <Typography variant="inherit">Profile</Typography>
-                </MenuItem>
-                <MenuItem onClick={() => alert('Only for Demo')}>
+                </MenuItem >
+                <MenuItem sx={{display:"flex", justifyContent:"flex-start", gap:1}}  onClick={() => alert('Only for Demo')}>
+                    <SettingsIcon fontSize='18px' />
                     <Typography variant="inherit">Settings</Typography>
                 </MenuItem>
-                <MenuItem onClick={handleLogout}>
+                <MenuItem sx={{display:"flex", justifyContent:"flex-start", gap:1}}  onClick={handleLogout}>
+                    <LogoutIcon fontSize='18px' />
                     <Typography variant="inherit">Logout</Typography>
                 </MenuItem>
             </Menu>

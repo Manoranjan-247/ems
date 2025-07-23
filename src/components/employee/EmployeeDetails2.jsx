@@ -32,7 +32,7 @@ const EmployeeDetails2 = () => {
     }
 
     return (
-        <Box sx={{ p: 2 }}>
+        <Box sx={{ p: 2, bgcolor:"#f5f9ff", minHeight:"93vh" }}>
             <Button
                 disableRipple
                 disableFocusRipple
@@ -66,7 +66,7 @@ const EmployeeDetails2 = () => {
                                     alignItems: "center",
                                     flexDirection: isSmallMobile ? "column" : "row",
                                 }}>
-                                    <Typography variant='h6' sx={{fontSize:{xs:"1.5rem", md:"1.8rem", lg:"2rem"}}} fontWeight={600}>{employee.fullName}</Typography>
+                                    <Typography variant='h6'  sx={{fontSize:{xs:"1.5rem", md:"1.8rem", lg:"2rem"}}} fontWeight={600}>{employee.fullName}</Typography>
                                     <Box sx={{ display: "flex", gap: 1 }}>
                                         <Chip label={employee.status} variant='filled' color={employee.status === "On Leave" ? 'error' : 'success'} />
                                         {employee.isAdmin && <Chip label='Admin' variant='outlined' color='primary' />}

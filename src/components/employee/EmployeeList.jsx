@@ -38,7 +38,7 @@ const EmployeeList = () => {
   const [searchQuery, setSearchQuery] = useState('');
 
   const [page, setPage] = useState(0); // MUI TablePagination is 0-indexed
-  const [rowsPerPage, setRowsPerPage] = useState(5);
+  const [rowsPerPage, setRowsPerPage] = useState(10);
 
 
 
@@ -65,9 +65,9 @@ const EmployeeList = () => {
     page * rowsPerPage + rowsPerPage
   );
 
-  useEffect(()=>{
+  useEffect(() => {
     setPage(0);
-  },[searchQuery])
+  }, [searchQuery])
 
 
 
@@ -163,10 +163,10 @@ const EmployeeList = () => {
     </Box>
   }
   return (
-    <Box sx={{ p: { xs: 0, sm: 2, md: 3 } }}>
-      <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: { md: 1, lg: 2 }, pt:1 }}>
+    <Box sx={{ p: { xs: 0, sm: 2, md: 3 }, bgcolor: "#f5f9ff",minHeight:"93vh" }}>
+      <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: { md: 1, lg: 2 }, pt: 1 }}>
         <Box>
-          <Typography variant='h4' sx={{ display: { xs: "none", md: "block" } }} >Employees</Typography>
+          <Typography variant='h4' color='primary' sx={{ display: { xs: "none", md: "block" } }} >Employees</Typography>
           <Typography variant='body1' mt={1} sx={{ opacity: 0.6, display: { xs: "none", md: "block" } }} >Manage your organization's employees</Typography>
         </Box>
 
@@ -174,9 +174,9 @@ const EmployeeList = () => {
           direction="row"
           spacing={1}
           sx={{
-            mr: {xs:2, md:0},
+            mr: { xs: 2, md: 0 },
             alignItems: "flex-end",
-            
+
           }}
         >
 
@@ -195,7 +195,7 @@ const EmployeeList = () => {
         </Stack>
       </Box>
 
-      <Box sx={{ p: 2, mt: 2,  }}>
+      <Box sx={{ p: 2, mt: 2, }}>
         <Stack
           direction={{ xs: 'column', sm: 'row' }}
           justifyContent="space-between"
@@ -211,7 +211,7 @@ const EmployeeList = () => {
             size="small"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            sx={{ width: { xs: '80%', sm: 300 }, pr: { md: 4, lg: 0 } }}
+            sx={{ width: { xs: '80%', sm: 300 }, pr: { md: 4, lg: 0 }, borderRadius: 2,  }}
             InputProps={{
               startAdornment: (
                 <InputAdornment position="start">
@@ -227,7 +227,7 @@ const EmployeeList = () => {
         <TableContainer sx={{ width: '100%', overflowX: 'auto' }} >
           <Table>
             <TableHead>
-              <TableRow sx={{bgcolor:"#FAF7F3", borderRadius:2}}>
+              <TableRow sx={{ bgcolor: "#e3f2fd", '& th': { color: "#0d47a1", borderBottom: "#1px solid #bbdefb" } }}>
                 <TableCell align='center' sx={{ fontSize: { xs: '1rem', xl: '1.15rem' } }}><strong>Sl no</strong></TableCell>
                 <TableCell align='center' sx={{ fontSize: { xs: '1rem', xl: '1.15rem' } }}><strong>Fullname</strong></TableCell>
                 <TableCell align='center' sx={{ display: { xs: "none", sm: "none", lg: "table-cell" }, fontSize: { xs: '1rem', xl: '1.15rem' } }}><strong>Profile photo</strong></TableCell>
@@ -235,16 +235,16 @@ const EmployeeList = () => {
                 <TableCell align='center' sx={{ display: { xs: "none", sm: "none", md: "table-cell" }, fontSize: { xs: '1rem', xl: '1.15rem' } }}><strong>Emp Id</strong></TableCell>
                 <TableCell align='center' sx={{ display: { xs: "none", sm: "none", md: "table-cell" }, fontSize: { xs: '1rem', xl: '1.15rem' } }}><strong>Designation</strong></TableCell>
                 <TableCell align='center' sx={{ display: { xs: "none", sm: "none", lg: "table-cell" }, fontSize: { xs: '1rem', xl: '1.15rem' } }}><strong>Department</strong></TableCell>
-                <TableCell align='center' sx={{ display: { xs: "none", sm: "table-cell" }, fontSize: { xs: '1rem', xl: '1.15rem' } }}><strong>Status</strong></TableCell>
+                <TableCell align='center' sx={{ display: { xs: "none", sm: "table-cell" }, '@media (min-width:600px) and (max-width:655px)':{display:"none"}, fontSize: { xs: '1rem', xl: '1.15rem' } }}><strong>Status</strong></TableCell>
                 {/* <TableCell align='center' sx={{ display: { xs: "none", sm: "none", md: "table-cell" }, fontSize: { xs: '1rem', xl: '1.15rem' } }}><strong>isAdmin</strong></TableCell> */}
-                <TableCell align='center' sx={{ display: { xs: "none", sm: "none", md: "none" }, '@media(min-width: 961px)':{display:"table-cell"}  , fontSize: { xs: '1rem', xl: '1.15rem' } }}><strong>isAdmin</strong></TableCell>
+                <TableCell align='center' sx={{ display: { xs: "none", sm: "none", md: "none" }, '@media(min-width: 961px)': { display: "table-cell" }, fontSize: { xs: '1rem', xl: '1.15rem' } }}><strong>isAdmin</strong></TableCell>
                 <TableCell align='center' sx={{ fontSize: { xs: '1rem', xl: '1.15rem' } }}><strong>Actions</strong></TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
               {filteredEmployees.length === 0 && searchQuery.length > 0 ? (<TableCell colSpan={10} align='center'>No employee found!!</TableCell>) :
                 (paginatedEmployees.map((emp, idx) => (
-                  <TableRow key={emp.empId}>
+                  <TableRow key={emp.empId} hover sx={{'&hover':{bgcolor:'#fof7ff', transition:'0.3s'}}}>
                     <TableCell align='center'>{page * rowsPerPage + idx + 1}</TableCell>
                     <TableCell align='center'>{emp.fullName}</TableCell>
 
@@ -263,12 +263,12 @@ const EmployeeList = () => {
                     <TableCell align='center' sx={{ display: { xs: "none", sm: "none", md: "table-cell", fontSize: { xs: '1rem', md: '1.5rem' } } }}>{emp.empId}</TableCell>
                     <TableCell align='center' sx={{ display: { xs: "none", sm: "none", md: "table-cell", fontSize: { xs: '1rem', md: '1.5rem' } } }}>{emp.designation}</TableCell>
                     <TableCell align='center' sx={{ display: { xs: "none", sm: "none", lg: "table-cell", fontSize: { xs: '1rem', md: '1.5rem' } } }}>{emp.department}</TableCell>
-                    <TableCell align='center' sx={{ display: { xs: "none", sm: "table-cell", fontSize: { xs: '1rem', md: '1.5rem' } } }}>
+                    <TableCell align='center' sx={{ display: { xs: "none", sm: "table-cell",'@media (min-width:600px) and (max-width:655px)':{display:"none"}, fontSize: { xs: '1rem', md: '1.5rem' } } }}>
                       <Chip label={emp.status} color={emp.status === "Active" ? "success" : emp.status === "On Leave" ? "error" : "default"} variant="outlined"
                       />
                     </TableCell>
-                    <TableCell align='center' sx={{ display: { xs: "none", sm: "none", md: "none", '@media(min-width: 961px)':{display:"table-cell"} } }}>
-                      {emp.isAdmin === true ? <GppGoodOutlinedIcon color='success' /> : <GppBadOutlinedIcon color='error'  />}
+                    <TableCell align='center' sx={{ display: { xs: "none", sm: "none", md: "none", '@media(min-width: 961px)': { display: "table-cell" } } }}>
+                      {emp.isAdmin === true ? <GppGoodOutlinedIcon color='success' /> : <GppBadOutlinedIcon color='error' />}
                     </TableCell>
                     <TableCell align='center'>
                       <Box sx={{
@@ -301,7 +301,7 @@ const EmployeeList = () => {
           onPageChange={handleChangePage}
           rowsPerPage={rowsPerPage}
           onRowsPerPageChange={handleChangeRowsPerPage}
-          rowsPerPageOptions={[5, 10, 25, 50]}
+          rowsPerPageOptions={[10, 15, 50]}
           sx={{ width: { xs: "100%" } }}
         />
 

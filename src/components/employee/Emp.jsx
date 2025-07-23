@@ -130,7 +130,11 @@ const Emp = () => {
   const employee = useSelector((store) => store.employee.employees.find((emp) => emp.empId === id));
   const allEmployees = useSelector((store) => store.employee.employees)
 
-  
+  //to track isadmin and profile photo in edit mode
+  // const [initialIsAdmin, setInitialIsAdmin] = useState(false);
+  // const [initialImage, setInitialImage] = useState(null);
+
+
 
 
   //validation schema
@@ -141,8 +145,11 @@ const Emp = () => {
       .min(2, "Full Name must be at least 2 characters.")
       .max(50, "Full Name must be at most 50 characters."),
     email: yup.string()
-      .email("Invalid email format")
       .required("Email is required")
+      .matches(
+        /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/,
+        "Invalid email format"
+      )
       .test(
         "unique-email",
         "This email is already registered",
@@ -196,13 +203,13 @@ const Emp = () => {
       .test(
         "no-duplicate-skills",
         "Duplicate skills are not allowed",
-        function(value){
-          if(!value) return true;
+        function (value) {
+          if (!value) return true;
           const skillArray = value.split(', ').map((skill) => skill.trim()).filter((skill) => skill !== "");
           const uniqueSkills = [...new Set(skillArray)];
           return skillArray.length === uniqueSkills.length;
         }
-    )
+      )
     ,
     profilePicture: yup
       .string()
@@ -216,8 +223,9 @@ const Emp = () => {
       string()
       .required("Employee ID is required")
       .matches(
-        /^[A-Za-z0-9]+$/,
-        "Only letters and numbers are allowed")
+        /^EMP\d{3,}$/,
+        "Start with 'EMP' followed by at least 3 digits"
+      )
       .test(
         "unique-empId",
         "This Employee ID already taken",
@@ -240,9 +248,9 @@ const Emp = () => {
       ),
     joiningDate: yup.string()
       .required("JoiningDate is required!"),
-    employeeType: yup.string().required("Employee Type is required"),
+    employeeType: yup.string().oneOf(["Intern", "Full Time"], "Either 'Intern' or 'Full Time'").required("Employee Type is required"),
     workLocation: yup.string().required("Worklocation  is required"),
-    status: yup.string().required("Status is required"),
+    status: yup.string().oneOf(["Active", "On Leave"], "Either 'Active' or 'On Leave'").required("Status is required"),
     managerNameOrId: yup.string().required("Manager name or Id is required"),
     isAdmin: yup.boolean().required("Is Admin is required!"),
     emergencyContact: yup.object({
@@ -292,7 +300,7 @@ const Emp = () => {
       }
     },
     mode: "onSubmit",
-     reValidateMode:"onChange" ,  //by default  value of reValidateMode
+    reValidateMode: "onChange",  //by default  value of reValidateMode
     // reValidateMode:"onSubmit",
     resolver: yupResolver(schema)
   });
@@ -363,7 +371,7 @@ const Emp = () => {
         const base64String = reader.result;
         setImagePreview(base64String); // For preview
         setSelectedImage(base64String); // Optional: update selected image state
-        setValue('profilePicture', base64String, { shouldValidate: true }); // Save to React Hook Form
+        setValue('profilePicture', base64String, { shouldValidate: true, shouldDirty:true }); // Save to React Hook Form
       };
 
       reader.readAsDataURL(file); // Converts to base64
@@ -376,7 +384,7 @@ const Emp = () => {
   };
 
   const handleFormSubmit = (data) => {
-    console.log("Form data : ", data);
+    // console.log("Form data : ", data);
     // console.log("photo url : ", data.profilePicture);
 
     const skillArray = data.skills.split(', ').map(skill => skill.trim()).filter(skill => skill !== "");
@@ -416,16 +424,16 @@ const Emp = () => {
   const watchedEmployeeType = watch("employeeType");
   const watchedStatus = watch("status");
 
-  if(isEditMode && !isIdExist){
-    return (<Box sx={{display:"flex",flexDirection:"column", justifyContent:"center", alignItems:"center", minHeight:"80vh", gap:"2"}}>
-      <Typography variant='h6' color='error' sx={{fontSize:{xs:"1rem", md:"2rem"}}}>Invalid Employee ID</Typography>
-      <Button variant='contained' onClick={()=> navigate('/employees')}>Go Back</Button>
+  if (isEditMode && !isIdExist) {
+    return (<Box sx={{ display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", minHeight: "80vh", gap: "2" }}>
+      <Typography variant='h6' color='error' sx={{ fontSize: { xs: "1rem", md: "2rem" } }}>Invalid Employee ID</Typography>
+      <Button variant='contained' onClick={() => navigate('/employees')}>Go Back</Button>
     </Box>)
   }
 
   return (
-    <Box p={2}>
-      <Box sx={{ display: "flex", flexDirection: { xs: "column", md: "column" }, gap: { xs: 1, md: 4 }, mb: { xs: 1, md: 3 }, pl: 2 }}>
+    <Box  sx={{p:2, bgcolor:"#f5f9ff", minHeight:"93vh"}}>
+      <Box sx={{ display: "flex", flexDirection: { xs: "column", md: "column" }, gap: { xs: 1, md: 2 }, mb: { xs: 1, md: 3 }, pl: 2 }}>
         <Button
           // fullWidth
           variant="text"
@@ -445,18 +453,18 @@ const Emp = () => {
           Back to Employees
         </Button>
         <Box>
-          {!isSmallMobile && <Typography variant='h4' fontWeight={600}>{isEditMode ? "Update employee" :"Add New Employee"}</Typography>}
+          {!isSmallMobile && <Typography color='primary.main' variant='h4' fontWeight={600} sx={{ '@media(max-width:389px)': { display: "none" } }}>{isEditMode ? "Update employee" : "Add New Employee"}</Typography>}
           <Typography variant='body1' mt={1} sx={{ opacity: isSmallMobile ? 1 : 0.7 }}>
-            {isEditMode ? "Change the details and update employee" :"Fill in the details to add a new employee"}
+            {isEditMode ? "Change the details and update employee" : "Fill in the details to add a new employee"}
           </Typography>
         </Box>
       </Box>
 
       <form noValidate onSubmit={handleSubmit(handleFormSubmit)}>
         <Box sx={{ flexGrow: 1 }}>
-          <Grid container spacing={2}>
+          <Grid container spacing={1}>
             <Grid size={{ md: 4 }} sx={{ p: 2, boxShadow: "rgba(0, 0, 0, 0.16) 0px 1px 4px" }}>
-              <Typography variant='h6' sx={{ fontSize: { xs: "1.5rem", lg: "2rem" } }} mb={2}>  Personal Information  </Typography>
+              <Typography  variant='h6' sx={{ fontSize: { xs: "1.5rem", '@media(min-width:900px) and (max-width:915px)': { fontSize: "1.4rem" }, lg: "2rem" } }} mb={2}>  Personal Information  </Typography>
 
               {/* Inner Grid Container */}
               <Grid container spacing={2}>
@@ -511,13 +519,14 @@ const Emp = () => {
                     />
                     {selectedImage && (
                       <Typography variant="caption" color="textSecondary">
-                        Image Selected
+                        Selected
                       </Typography>
                     )}
                     {imagePreview && (
                       <Avatar
                         src={imagePreview}
-                        sx={{ width: 100, height: 100 }}
+                        // sx={{ width: 100, height: 100 }}
+                        sx={{ '@media(max-width:400px)': { width: 50, height: 50 }, width: { xs: 100, md: 80, lg: 100 }, height: { xs: 100, md: 80, lg: 100 } }}
                         alt="Employee Preview"
                       />
                     )}
@@ -548,7 +557,7 @@ const Emp = () => {
                 <Grid size={{ xs: 12, sm: 6, md: 6 }}>
                   <TextField label="Joining date" type='date' fullWidth variant="outlined" InputLabelProps={{ shrink: true }} {...register("joiningDate")} error={!!errors.joiningDate} helperText={errors.joiningDate?.message} />
                 </Grid>
-                <Grid  size={{ xs: 12, sm: 6, md: 6 }} >
+                <Grid size={{ xs: 12, sm: 6, md: 6 }} >
                   <TextField label="Employee Type" select fullWidth variant="outlined" value={watchedEmployeeType || ""}   {...register("employeeType")} error={!!errors.employeeType} helperText={errors.employeeType?.message}>
                     <MenuItem value="">Select Employee Type</MenuItem>
                     <MenuItem value="Full Time">Full Time</MenuItem>
@@ -559,7 +568,7 @@ const Emp = () => {
                 <Grid size={{ xs: 12, sm: 6, md: 6 }}>
                   <TextField label="Work Location" type='text' fullWidth variant="outlined" {...register("workLocation")} error={!!errors.workLocation} helperText={errors.workLocation?.message} />
                 </Grid>
-                <Grid  size={{ xs: 12, sm: 6, md: 6 }} >
+                <Grid size={{ xs: 12, sm: 6, md: 6 }} >
                   <TextField label="Status" select fullWidth variant="outlined" value={watchedStatus || ""}   {...register("status")} error={!!errors.status} helperText={errors.status?.message}>
                     <MenuItem value="">Select Status</MenuItem>
                     <MenuItem value="Active">Active</MenuItem>
@@ -570,14 +579,14 @@ const Emp = () => {
                 <Grid size={{ xs: 12, sm: 6, md: 6 }}>
                   <TextField label="Manager name or ID" type='text' fullWidth variant="outlined" {...register("managerNameOrId")} error={!!errors.managerNameOrId} helperText={errors.managerNameOrId?.message} />
                 </Grid>
-                <Grid  size={{ xs: 12, md: 6 }}>
+                <Grid size={{ xs: 12, md: 6 }}>
                   <FormControlLabel
                     control={
                       <Checkbox
                         checked={isAdmin}
                         onChange={(e) => {
                           setIsAdmin(e.target.checked);
-                          setValue("isAdmin", e.target.checked, { shouldValidate: true });
+                          setValue("isAdmin", e.target.checked, { shouldValidate: true, shouldDirty:true });
                         }}
                         color="primary"
                       />
@@ -613,7 +622,7 @@ const Emp = () => {
             {/* Submit Button */}
             <Grid size={{ xs: 12, md: 12 }} sx={{ mt: 3 }}>
               <Box sx={{ display: 'flex', gap: 2, justifyContent: 'flex-end', flexWrap: "wrap" }}>
-                {!isEditMode && <Button type='button' variant="contained" onClick={() => { reset(); setImagePreview(null); setSelectedImage(null) }} sx={{
+                {!isEditMode && <Button disabled={!isDirty} type='button' variant="contained" onClick={() => { reset(); setImagePreview(null); setSelectedImage(null) }} sx={{
                   px: { xs: 1, sm: 2 },
                   py: { xs: 0.5, sm: 1 },
                   fontSize: { xs: '0.7rem', sm: '0.875rem' },
@@ -629,13 +638,13 @@ const Emp = () => {
                 }}>
                   Cancel
                 </Button>
-                <Button disabled={!isDirty} variant="contained" color="success" type='submit' sx={{
+                <Button disabled={(!isDirty && (isEditMode || !isEditMode))}  variant="contained" color="success" type='submit' sx={{
                   px: { xs: 1, sm: 2 },
                   py: { xs: 0.5, sm: 1 },
                   fontSize: { xs: '0.7rem', sm: '0.875rem' },
                   minWidth: 0,
                 }}>
-                  {isEditMode ? "Update Employee" : "Add Employee"}
+                  {isEditMode ? "Update" : "Add "}
                 </Button>
                 <Snackbar open={snackbarOpen} autoHideDuration={1000} onClose={handleClose} anchorOrigin={{ vertical: 'top', horizontal: 'right' }}>
                   <Alert severity='success' variant='filled' sx={{ width: "300px" }} onClose={handleClose}>

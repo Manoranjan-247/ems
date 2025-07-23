@@ -4,14 +4,15 @@ import { Drawer, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Div
 import { Users, UserPlus, Home, Settings } from 'lucide-react';
 import { useLayoutContext } from '../context/LayoutContext';
 import { useMediaQuery, useTheme } from '@mui/material';
-
+import GroupIcon from '@mui/icons-material/Group';
+import PersonAddIcon from '@mui/icons-material/PersonAdd';
 const drawerWidthOpen = 240;
 const drawerWidthClosed = 64;
 
 const navigation = [
   // { name: 'Dashboard', href: '/dashboard', icon: <Home /> },
-  { name: 'Employees', href: '/employees', icon: <Users /> },
-  { name: 'Add Employee', href: '/employees/new', icon: <UserPlus /> },
+  { name: 'Employees', href: '/employees', icon: <GroupIcon /> },
+  { name: 'Add Employee', href: '/employees/new', icon: <PersonAddIcon /> },
   // { name: 'Settings', href: '/settings', icon: <Settings /> },
 ];
 
@@ -109,7 +110,7 @@ const Sidebar3 = () => {
                   >
                     {item.icon}
                   </ListItemIcon>
-                  {sidebarOpen && <ListItemText primary={item.name} />}
+                  {sidebarOpen && <ListItemText sx={{fontWeight:"bold"}} primary={item.name} />}
                 </ListItemButton>
               </NavLink>
             </ListItem>
